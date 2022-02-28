@@ -1,0 +1,27 @@
+a {
+  color: #1772d0;
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  color: #f09228;
+  text-decoration: none;
+}
+
+body {
+  font-family: Avenir, Helvetica, sans-serif;
+  font-size: 16px
+}
+
+body {
+    margin: 2em 5em;
+}
+
+.space {
+    margin-bottom: 20px;
+}
+
+.date {
+    padding-top: 15px;
+}
