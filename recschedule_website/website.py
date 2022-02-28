@@ -25,6 +25,7 @@ HTML_HEAD = """
 HTML_END = """
 <br>
 <hr>
+<p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery and have average lighting, Rockwell is a lot better.</p>
 <p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest rec schedule 
 (<a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a>)</p>
 <p>There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
