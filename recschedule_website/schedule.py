@@ -64,7 +64,10 @@ class Schedule(NamedTuple):
     def create_google_calendar_link(self) -> str:
         url = "https://www.google.com/calendar/render?action=TEMPLATE"
         url += f"&text=Badminton ({self.location})"
-        url += f"&details=MIT Badminton Open Recreation at {self.location}"
+        url += (
+            f"&details=MIT Badminton Open Recreation%0ASession: {self.start_time} "
+            f"to {self.end_time}%0ALocation: {self.location}"
+        )
         url += f"&location={LOCATION_TO_ADDRESS.get(self.location, self.location)}"
         url += f"&dates={self.start_time_utc_str}%2F{self.end_time_utc_str}"
         return url.replace(" ", "%20")
