@@ -26,8 +26,10 @@ HTML_END = """
 <br>
 <hr>
 <p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery and have average lighting, Rockwell is a lot better.</p>
-<p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest rec schedule 
-(<a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a>)</p>
+<p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest rec schedule downloaded
+(<a href="https://shen.nz/badminton/recschedule-new.pdf">https://shen.nz/badminton/recschedule-new.pdf</a>)</p>
+<p>You can find the original recschedule at <a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a></p>
+<p>There is a known issue with the MIT website where your browser may show you an old version.</p>
 <p>There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
 <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
 </body>
