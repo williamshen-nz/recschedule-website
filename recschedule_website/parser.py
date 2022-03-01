@@ -99,22 +99,31 @@ def get_schedules_for_dates(
     """
     # There could be multiple occurrences of a date in the recschedule, so keep track of
     # indexes already scanned
-    date_idx_to_str_idx = defaultdict(int)
+    date_to_str_idx: Dict[str, int] = defaultdict(int)
     date_to_schedule_strs: Dict[str, List[Schedule]] = defaultdict(list)
 
     for idx, date in enumerate(dates):
-        str_idx = recschedule.find(date, date_idx_to_str_idx[date])
-        date_idx_to_str_idx[idx] = str_idx
+        str_idx = recschedule.find(date, date_to_str_idx[date] + 1)
 
         # If we're at the second date, we can start filling in substring between
         # first date and second date
         if idx >= 1:
             prev_date = dates[idx - 1]
-            prev_date_str_idx = date_idx_to_str_idx[idx - 1]
+            prev_date_str_idx = date_to_str_idx[prev_date]
 
             substring = recschedule[prev_date_str_idx:str_idx]
             date_to_schedule_strs[prev_date].extend(
                 filter_for_sport(date=prev_date, substring=substring, sport=sport)
             )
+
+        # If last element of dates then process that as well
+        if idx == len(dates) - 1:
+            substring = recschedule[str_idx:]
+            date_to_schedule_strs[date].extend(
+                filter_for_sport(date=date, substring=substring, sport=sport)
+            )
+
+        # Update index of the current date now we have processed it
+        date_to_str_idx[date] = str_idx
 
     return date_to_schedule_strs
