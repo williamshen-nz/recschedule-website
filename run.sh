@@ -3,8 +3,8 @@
 set -e
 
 HTML_FNAME=index.html
-RECSCHEDULE_PDF=recschedule-new.pdf
-RECSCHEDULE_TXT=recschedule-new.txt
+RECSCHEDULE_PDF=recschedule-latest.pdf
+RECSCHEDULE_TXT=recschedule-latest.txt
 
 current_date=`date`
 echo === "$current_date" ===

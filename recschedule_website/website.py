@@ -6,8 +6,14 @@ import pytz
 from recschedule_website.schedule import Schedule, BOSTON_TZ
 
 HTML_HEAD = """
+<!DOCTYPE html>
+
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="MIT Open Recreation Badminton - Unofficial Schedule">
+
 <title>MIT Open Rec Badminton Schedule</title>
 
 <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-71827372-1','auto');ga('send','pageview');</script>
@@ -25,12 +31,12 @@ HTML_HEAD = """
 HTML_END = """
 <br>
 <hr>
-<p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery and have average lighting, Rockwell is a lot better.</p>
-<p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest rec schedule downloaded
-(<a href="https://shen.nz/badminton/recschedule-new.pdf">https://shen.nz/badminton/recschedule-new.pdf</a>)</p>
-<p>You can find the original recschedule at <a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a></p>
-<p>There is a known issue with the MIT website where your browser may show you an old version.</p>
-<p>There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
+<p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery, Rockwell is a lot better.</p>
+<p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest recschedule downloaded
+(<a href="https://shen.nz/badminton/recschedule-latest.pdf">https://shen.nz/badminton/recschedule-latest.pdf</a>). <br>
+You can find the original recschedule at: <a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a></p>
+<p>There is a known issue where your browser may show you an old version of the schedule. This is probably due to client-side caching, etc.<br>
+There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
 <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
 </body>
 </html>

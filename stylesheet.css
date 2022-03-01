@@ -15,7 +15,8 @@ body {
 }
 
 body {
-    margin: 2em 5em;
+    margin: 3em 5em;
+    word-wrap: break-word;
 }
 
 .space {
@@ -23,5 +24,22 @@ body {
 }
 
 .date {
-    padding-top: 15px;
+    padding-top: 1em;
+}
+
+p {
+    margin: 0.5em 0;
+    line-height: 1.3;
+}
+
+@media (max-width: 769px) {
+    body {
+        margin: 2em 3em;
+    }
+}
+
+@media (max-width: 426px) {
+    body {
+        margin: 1em 2em;
+    }
 }
