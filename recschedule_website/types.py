@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime
-from functools import cached_property
-from typing import NamedTuple
 
 import datefinder
 import pytz
@@ -25,7 +23,7 @@ class CustomDate:
 
     date_str: str
 
-    @cached_property
+    @property
     def datetime(self) -> datetime:
         datetimes = list(datefinder.find_dates(self.date_str))
         assert len(datetimes) == 1
