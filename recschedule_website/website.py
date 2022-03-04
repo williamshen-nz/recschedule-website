@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import pytz
 
-from recschedule_website.schedule import Schedule, BOSTON_TZ
+from recschedule_website.types import BOSTON_TZ, CustomDate, Schedule
 
 HTML_HEAD = """
 <!DOCTYPE html>
@@ -44,7 +44,7 @@ There is no guarantee for accuracy. Please contact willshen at mit.edu with any 
 
 
 def write_html_for_schedule(
-    date_to_schedules: Dict[str, List[Schedule]], fname: str
+    date_to_schedules: Dict[CustomDate, List[Schedule]], fname: str
 ) -> None:
     current_datetime_in_boston_tz = (
         datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(BOSTON_TZ)

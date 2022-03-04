@@ -1,8 +1,8 @@
 import re
 from collections import defaultdict
-from typing import List, Dict
+from typing import Dict, List
 
-from recschedule_website.schedule import Schedule
+from recschedule_website.types import CustomDate, Schedule
 
 # Recommend using https://regex101.com/ for debugging
 
@@ -20,7 +20,7 @@ OPENREC_REGEX = (
 )
 
 
-def extract_dates(recschedule: str) -> List[str]:
+def extract_dates(recschedule: str) -> List[CustomDate]:
     """
     Extract all the dates in the recschedule sequentially. Note that
     there may be duplicates, hence we use a list.
@@ -31,11 +31,12 @@ def extract_dates(recschedule: str) -> List[str]:
         assert len(matches) == 5, f"Unexpected matches! {matches}"
 
     # First group contains entire date string (e.g. Monday, January 15, 2022)
-    return [matches[0] for matches in date_matches]
+    custom_dates = [CustomDate(matches[0]) for matches in date_matches]
+    return custom_dates
 
 
 def filter_for_sport(
-    date: str, substring: str, sport: str = "Badminton"
+    date: CustomDate, substring: str, sport: str = "Badminton"
 ) -> List[Schedule]:
     # FIXME: if you want to add another sport you should alter this
     if sport != "Badminton":
@@ -83,27 +84,28 @@ def filter_for_sport(
         start_time = matches[0] + " " + matches[1]
         end_time = matches[2] + " " + matches[3]
         location = matches[4]
+        # Create Schedule for this entry
         schedules.append(Schedule(date, start_time, end_time, location))
 
     return schedules
 
 
 def get_schedules_for_dates(
-    dates: List[str], recschedule: str, sport: str = "Badminton"
-) -> Dict[str, List[Schedule]]:
+    dates: List[CustomDate], recschedule: str, sport: str = "Badminton"
+) -> Dict[CustomDate, List[Schedule]]:
     """
     Get the line items between dates that we parsed out of the recschedule.
     This is so we can process them later.
 
-    Returns a dict mapping the date as a string to a list of strings containing the schedules
+    Returns a dict mapping the date as a CustomDate to a list of strings containing the schedules
     """
     # There could be multiple occurrences of a date in the recschedule, so keep track of
     # indexes already scanned
-    date_to_str_idx: Dict[str, int] = defaultdict(int)
-    date_to_schedule_strs: Dict[str, List[Schedule]] = defaultdict(list)
+    date_to_str_idx: Dict[CustomDate, int] = defaultdict(int)
+    date_to_schedule_strs: Dict[CustomDate, List[Schedule]] = defaultdict(list)
 
     for idx, date in enumerate(dates):
-        str_idx = recschedule.find(date, date_to_str_idx[date] + 1)
+        str_idx = recschedule.find(date.date_str, date_to_str_idx[date] + 1)
 
         # If we're at the second date, we can start filling in substring between
         # first date and second date

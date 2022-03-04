@@ -1,4 +1,6 @@
+from dataclasses import dataclass
 from datetime import datetime
+from functools import cached_property
 from typing import NamedTuple
 
 import datefinder
@@ -14,29 +16,40 @@ LOCATION_TO_ADDRESS = {
 }
 
 
-class Schedule(NamedTuple):
-    date: str
+@dataclass(frozen=True)
+class CustomDate:
+    """
+    Date without year, month and day only.
+    Needed as we use both string and datetime representation.
+    """
+
+    date_str: str
+
+    @cached_property
+    def datetime(self) -> datetime:
+        datetimes = list(datefinder.find_dates(self.date_str))
+        assert len(datetimes) == 1
+        return datetimes[0]
+
+    def __str__(self):
+        return self.date_str
+
+
+@dataclass(frozen=True)
+class Schedule:
+    date: CustomDate
     start_time: str
     end_time: str
     location: str
 
-    def to_html(self):
+    def to_html(self) -> str:
         return (
-            self.start_time
-            + " - "
-            + self.end_time
-            + ", "
-            + self.location
-            + f' [<a href="{self.create_google_calendar_link()}">Google Cal</a>]'
+            f"{self.start_time} - {self.end_time}, {self.location} "
+            f'[<a href="{self.create_google_calendar_link()}">Google Cal</a>]'
         )
 
     def hh_mm_to_utc_str(self, hh_mm_str: str) -> str:
         # Input format = \d{1,2}:\d{2} AM|PM
-        # Extract date from string
-        date = list(datefinder.find_dates(self.date))
-        assert len(date) == 1
-        date = date[0]
-
         # Parse the hour and minutes from the string
         hour = int(hh_mm_str.split(":")[0])
         minutes = int(hh_mm_str.split(":")[1].split(" ")[0])
@@ -46,6 +59,7 @@ class Schedule(NamedTuple):
             hour += 12
 
         # Convert to local timezone and then UTC for Google Calendar
+        date = self.date.datetime
         start_date = datetime(date.year, date.month, date.day, hour, minutes)
         local_datetime = BOSTON_TZ.localize(start_date, is_dst=None)
 

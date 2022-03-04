@@ -1,3 +1,7 @@
 .idea/
 *.pyc
 __pycache__
+.pytest_cache
+
+index.html
+recschedule-latest*
