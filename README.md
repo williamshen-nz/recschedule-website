@@ -8,7 +8,7 @@ See https://shen.nz/badminton for an example.
 **Note:** only badminton is supported for now but should be easy to extend to other sports.
 
 ### Installation
-Python 3.6+ required. Bash script was tested on Ubuntu 18.04.
+Python 3.6+ required. Bash script was tested on Ubuntu 18.04 and Mac OS.
 
 1. Install `pdftotext` if you don't have it installed already `sudo apt-get install poppler-utils`
 2. Install the requirements `pip install -r requirements.txt`
@@ -19,7 +19,7 @@ You may need to modify the `run.sh` script to work for your system with the rela
 
 ```
 # Run every 30 minutes and output to log
-*/30 * * * * /home/ubuntu/recschedule-website/run.sh >> /home/ubuntu/recschedule-website/run.log
+*/30 * * * * cd /home/willshen/recschedule-website && ./run.sh >> run.log 2>&1
 ```
 
 ### TODO

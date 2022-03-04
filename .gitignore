@@ -3,5 +3,5 @@
 __pycache__
 .pytest_cache
 
-index.html
+*.html
 recschedule-latest*

@@ -44,21 +44,58 @@ There is no guarantee for accuracy. Please contact willshen at mit.edu with any 
 
 
 def write_html_for_schedule(
-    date_to_schedules: Dict[CustomDate, List[Schedule]], fname: str
+    date_to_schedules: Dict[CustomDate, List[Schedule]],
+    out_fname: str,
+    filter_dates_before_now: bool,
+    debug: bool = True,
 ) -> None:
+    """
+    Form and write the HTML file for each date and its schedules.
+
+    :param date_to_schedules: Dict of CustomDate to Schedule objects for that date
+    :param out_fname: fname of output HTML file
+    :param filter_dates_before_now: whether we should filter out dates before now
+        (i.e., when we are running this script)
+    :param debug: whether to print some debug statements
+    :return: None
+    """
     current_datetime_in_boston_tz = (
         datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(BOSTON_TZ)
     )
 
-    # Markdown Section
+    # HTML Section
+    human_readable_date = current_datetime_in_boston_tz.strftime(
+        "%a, %d %b %Y %-I:%M:%S %p"
+    )
+    if debug:
+        print(f"Current Boston time {human_readable_date}")
+
+    if filter_dates_before_now:
+        time_debug_html = (
+            f"<p>Showing sessions on or after {human_readable_date} Boston time.</p>"
+        )
+    else:
+        time_debug_html = f"<p>Last updated on {human_readable_date} Boston time.</p>"
+
     html_lines = [
         HTML_HEAD,
         "<h2>MIT Open Rec Badminton - Unofficial Schedule</h2>",
-        f"<p>Last updated on {current_datetime_in_boston_tz.strftime('%a, %d %b %Y %-I:%M:%S %p')} Boston time.</p>",
+        time_debug_html,
         "<hr>",
     ]
 
     for date, schedules in date_to_schedules.items():
+        # Filter out dates before now (not inclusive as today may not have ended)
+        if (
+            filter_dates_before_now
+            and date.datetime.date() < current_datetime_in_boston_tz.date()
+        ):
+            if debug:
+                print(f"{date} has {len(schedules)} sessions. Filtering out.")
+            continue
+
+        print(f"{date} has {len(schedules)} sessions")
+        # Form HTML for each schedule
         html_lines.append(f"<p class='date'><strong>{date}</strong></p>")
         if schedules:
             for schedule in schedules:
@@ -67,4 +104,6 @@ def write_html_for_schedule(
             html_lines.append("<p>No sessions.</p>")
 
     html_lines.append(HTML_END)
-    open(fname, "w").write("\n".join(html_lines))
+    open(out_fname, "w").write("\n".join(html_lines))
+    if debug:
+        print(f"Wrote HTML to {out_fname}")
