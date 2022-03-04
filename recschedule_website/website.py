@@ -60,8 +60,11 @@ def write_html_for_schedule(
 
     for date, schedules in date_to_schedules.items():
         html_lines.append(f"<p class='date'><strong>{date}</strong></p>")
-        for schedule in schedules:
-            html_lines.append("<p>" + schedule.to_html() + "</p>")
+        if schedules:
+            for schedule in schedules:
+                html_lines.append("<p>" + schedule.to_html() + "</p>")
+        else:
+            html_lines.append("<p>No sessions.</p>")
 
     html_lines.append(HTML_END)
     open(fname, "w").write("\n".join(html_lines))
