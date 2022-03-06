@@ -11,22 +11,25 @@ a:hover {
 
 body {
     font-family: Avenir, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 1em;
     overflow-wrap: break-word;
     background-color: #fbfcfd;
     margin: 0 0;
 }
 
 .title {
+    font-size: 1.5em;
     margin-top: 0;
 }
 
 .date {
-    padding-top: 1em;
+    margin-top: 1em;
     font-weight: bold;
+    font-size: 1.06em;
 }
 
 .session-title {
+    font-size: 1.2em;
     margin-bottom: 0;
 }
 
@@ -36,7 +39,7 @@ p {
 }
 
 #schedules {
-    margin-bottom: 20px;
+    margin-bottom: 1.2em;
 }
 
 .wrapper {
@@ -66,9 +69,23 @@ span {
     white-space: pre;
 }
 
+#show {
+    margin-bottom: 1em;
+}
+
+#schedules > .date:first-child {
+    margin-top: 0.7em;
+}
+
 @media (max-width: 769px) {
     .wrapper {
         margin: 0 0;
         width: 100%;
+    }
+}
+
+@media (max-width: 426px) {
+    .content {
+        padding: 1.2em 1.2em;
     }
 }

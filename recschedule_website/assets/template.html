@@ -36,30 +36,32 @@
                 <h2 class="title">MIT Open Rec Badminton - Unofficial Schedule</h2>
                 <p>Last updated on {{ current_date_str }} Boston time.</p>
                 <div class="horizontal-rule"></div>
-                <div id='old-schedules' style='display: none;'>
-                    <h3 class="session-title">Past Sessions</h3>
-                    {% for date, schedules in past_date_to_schedules.items() %}
-                        <div class='date'>{{ date }}</div>
-                        {% if schedules %}
-                            {% for schedule in schedules %}
-                                <p>{{ schedule.to_html() }}</p>
-                            {% endfor %}
-                        {% else %}
-                            <p>No sessions.</p>
-                        {% endif %}
-                    {% endfor %}
-                    <div class="date"></div>
-                </div>
+                {% if past_date_to_schedules %}
+                    <div id='old-schedules' style='display: none;'>
+                        <h3 class="session-title">Past Sessions</h3>
+                        {% for date, schedules in past_date_to_schedules.items() %}
+                            <div class='date'>{{ date }}</div>
+                            {% if schedules %}
+                                {% for schedule in schedules %}
+                                    <p>{{ schedule.to_html() }}</p>
+                                {% endfor %}
+                            {% else %}
+                                <p>No sessions.</p>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="date"></div>
+                    </div>
 
-                <!-- Show and hide buttons for past sessions -->
-                <div id="show">
-                    <a href="javascript:void(0)" target="_self" onclick="showOldSchedules()">Show previous sessions</a>
-                </div>
-                <div id="hide" style="display:none;">
-                    <a href="javascript:void(0)" target="_self" onclick="hideOldSchedules()">Hide previous sessions</a>
-                    <div class="horizontal-rule"></div>
-                    <h3 class="session-title">Upcoming Sessions</h3>
-                </div>
+                    <!-- Show and hide buttons for past sessions -->
+                    <div id="show">
+                        <a href="javascript:void(0)" target="_self" onclick="showOldSchedules()">Show previous sessions</a>
+                    </div>
+                    <div id="hide" style="display:none;">
+                        <a href="javascript:void(0)" target="_self" onclick="hideOldSchedules()">Hide previous sessions</a>
+                        <div class="horizontal-rule"></div>
+                        <h3 class="session-title">Upcoming Sessions</h3>
+                    </div>
+                {% endif %}
 
                 <!-- Upcoming Sessions -->
                 <div id="schedules">
@@ -80,8 +82,11 @@
 
                 <!-- Footer -->
                 <p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery, Rockwell is a lot better.</p>
-                <p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest recschedule downloaded
-                    (<a href="https://shen.nz/badminton/recschedule-latest.pdf">https://shen.nz/badminton/recschedule-latest.pdf</a>). <br>
+                <p>
+                    <strong>Notes:</strong> this schedule is updated every 30 minutes from the latest recschedule downloaded
+                    (<a href="https://shen.nz/badminton/recschedule-latest.pdf">https://shen.nz/badminton/recschedule-latest.pdf</a>)
+                </p>
+                <p>
                     You can find the original recschedule at: <a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a>
                 </p>
                 <p>There is a known issue where your browser may show you an old version of the schedule. This is probably due to client-side caching, etc.</p>
