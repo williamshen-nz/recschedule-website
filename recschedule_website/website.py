@@ -12,7 +12,6 @@ def _determine_template_fname() -> str:
     module_dir = os.path.dirname(__file__)
     assets_dir = os.path.join(module_dir, "assets")
     template_path = os.path.join(assets_dir, "template.html")
-    print(template_path)
     return template_path
 
 
@@ -67,8 +66,6 @@ def _render_html_template(
     # Get File Content in String
     template_str = open(_determine_template_fname(), "r").read()
     jinja_template = Template(source=template_str)
-
-    print("ashduioshirohrioehwiorhewior")
 
     # Render template
     render_dict = _get_render_dict(date_to_schedules, debug)
