@@ -1,30 +1,33 @@
 a {
-  color: #1772d0;
-  text-decoration: none;
+    color: #1772d0;
+    text-decoration: none;
 }
 
 a:focus,
 a:hover {
-  color: #f09228;
-  text-decoration: none;
+    color: #f09228;
+    text-decoration: none;
 }
 
 body {
-  font-family: Avenir, Helvetica, sans-serif;
-  font-size: 16px
+    font-family: Avenir, Helvetica, sans-serif;
+    font-size: 16px;
+    overflow-wrap: break-word;
+    background-color: #fbfcfd;
+    margin: 0 0;
 }
 
-body {
-    margin: 3em 5em;
-    word-wrap: break-word;
-}
-
-.space {
-    margin-bottom: 20px;
+.title {
+    margin-top: 0;
 }
 
 .date {
     padding-top: 1em;
+    font-weight: bold;
+}
+
+.session-title {
+    margin-bottom: 0;
 }
 
 p {
@@ -32,14 +35,40 @@ p {
     line-height: 1.3;
 }
 
-@media (max-width: 769px) {
-    body {
-        margin: 2em 3em;
-    }
+#schedules {
+    margin-bottom: 20px;
 }
 
-@media (max-width: 426px) {
-    body {
-        margin: 1em 1em;
+.wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    background-color: #fff;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    width: calc(90% - 16px);
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%)
+}
+
+.content {
+    padding: 2em 2em;
+}
+
+.horizontal-rule {
+    border-top: 2px solid #d2d2d2;
+    margin: 1em 0;
+}
+
+span {
+    /* Force line-break if Google Calendar link spans multiple lines */
+    white-space: pre;
+}
+
+@media (max-width: 769px) {
+    .wrapper {
+        margin: 0 0;
+        width: 100%;
     }
 }

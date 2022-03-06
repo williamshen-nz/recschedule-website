@@ -13,12 +13,4 @@ def process_recschedule(in_fname: str, out_fname: str) -> None:
     recschedule = open(in_fname, "r").read()
     dates = extract_dates(recschedule)
     date_to_schedules = get_schedules_for_dates(dates, recschedule)
-    write_html_for_schedule(
-        date_to_schedules, out_fname=out_fname, filter_dates_before_now=False
-    )
-
-    # Write HTML for testing filtering out dates before now
-    print("=> Debug for filtering out dates before now")
-    write_html_for_schedule(
-        date_to_schedules, out_fname="beta.html", filter_dates_before_now=True
-    )
+    write_html_for_schedule(date_to_schedules, output_html_fname=out_fname)

@@ -43,7 +43,7 @@ class Schedule:
     def to_html(self) -> str:
         return (
             f"{self.start_time} - {self.end_time}, {self.location} "
-            f'[<a href="{self.create_google_calendar_link()}">Google Cal</a>]'
+            f'<span>[<a href="{self.create_google_calendar_link()}">Google Cal</a>]</span>'
         )
 
     def hh_mm_to_utc_str(self, hh_mm_str: str) -> str:

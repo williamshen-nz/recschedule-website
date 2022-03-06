@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <meta name="description" content="MIT Open Recreation Badminton - Unofficial Schedule">
+
+        <title>MIT Open Rec Badminton Schedule</title>
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-71827372-1','auto');ga('send','pageview');</script>
+
+        <link rel="icon" type="image/png" href="https://shen.nz/images/mit_logo.svg">
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+        <!-- For showing/hiding previous sessions -->
+        <script type="text/javascript">
+            function showOldSchedules() {
+                document.getElementById('old-schedules').style.display='block';
+                document.getElementById('show').style.display='none';
+                document.getElementById('hide').style.display='block';
+            }
+
+            function hideOldSchedules() {
+                document.getElementById('old-schedules').style.display='none';
+                document.getElementById('show').style.display='block';
+                document.getElementById('hide').style.display='none';
+            }
+        </script>
+
+        <!-- Open all links (i.e. Google Calendar) in new tab -->
+        <base target="_blank">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="content">
+                <h2 class="title">MIT Open Rec Badminton - Unofficial Schedule</h2>
+                <p>Last updated on {{ current_date_str }} Boston time.</p>
+                <div class="horizontal-rule"></div>
+                <div id='old-schedules' style='display: none;'>
+                    <h3 class="session-title">Past Sessions</h3>
+                    {% for date, schedules in past_date_to_schedules.items() %}
+                        <div class='date'>{{ date }}</div>
+                        {% if schedules %}
+                            {% for schedule in schedules %}
+                                <p>{{ schedule.to_html() }}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>No sessions.</p>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="date"></div>
+                </div>
+
+                <!-- Show and hide buttons for past sessions -->
+                <div id="show">
+                    <a href="javascript:void(0)" target="_self" onclick="showOldSchedules()">Show previous sessions</a>
+                </div>
+                <div id="hide" style="display:none;">
+                    <a href="javascript:void(0)" target="_self" onclick="hideOldSchedules()">Hide previous sessions</a>
+                    <div class="horizontal-rule"></div>
+                    <h3 class="session-title">Upcoming Sessions</h3>
+                </div>
+
+                <!-- Upcoming Sessions -->
+                <div id="schedules">
+                    {% for date, schedules in upcoming_date_to_schedules.items() %}
+                        <div class='date'>{{ date }}</div>
+                        {% if schedules %}
+                            {% for schedule in schedules %}
+                                <p>{{ schedule.to_html() }}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>No sessions.</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- Break before footer -->
+                <div class="horizontal-rule"></div>
+
+                <!-- Footer -->
+                <p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery, Rockwell is a lot better.</p>
+                <p><strong>Notes:</strong> this schedule is updated every 30 minutes from the latest recschedule downloaded
+                    (<a href="https://shen.nz/badminton/recschedule-latest.pdf">https://shen.nz/badminton/recschedule-latest.pdf</a>). <br>
+                    You can find the original recschedule at: <a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a>
+                </p>
+                <p>There is a known issue where your browser may show you an old version of the schedule. This is probably due to client-side caching, etc.</p>
+                <p>There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
+                <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
+            </div>
+        </div>
+    </body>
+</html>
