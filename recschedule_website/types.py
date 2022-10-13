@@ -39,10 +39,12 @@ class Schedule:
     start_time: str
     end_time: str
     location: str
+    shared: bool = False
 
     def to_html(self) -> str:
+        tag_for_shared = " - Open Rec<span class='star'>*</span> "
         return (
-            f"{self.start_time} - {self.end_time}, {self.location} "
+            f"{self.start_time} - {self.end_time}, {self.location} {tag_for_shared if self.shared else ''} "
             f'<span>[<a href="{self.create_google_calendar_link()}">Google Cal</a>]</span>'
         )
 
