@@ -1,0 +1,107 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.10.7, pytest-7.1.3, pluggy-1.0.0 -- /Users/aoranwu/PycharmProjects/recschedule-website/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/aoranwu/PycharmProjects/recschedule-website
+collecting ... collected 5 items
+
+test/test_parser.py::test_extract_dates PASSED                           [ 20%]
+test/test_parser.py::test_get_schedule_for_dates PASSED                  [ 40%]
+test/test_parser.py::test_get_schedule_for_dates_include_open_rec FAILED [ 60%]
+test/test_types.py::test_custom_date[Thursday, March 3, 2022-expected_datetime0] PASSED [ 80%]
+test/test_types.py::test_custom_date[Monday, February 28, 2022-expected_datetime1] PASSED [100%]
+
+=================================== FAILURES ===================================
+_________________ test_get_schedule_for_dates_include_open_rec _________________
+
+recschedule_txt = 'Massachusetts Institute of Technology                                                       Event Schedule\n\n\n     ...\n3/3/2022 12:37 PM MD                                                                               Page 9 of 9\n\x0c'
+
+    def test_get_schedule_for_dates_include_open_rec(recschedule_txt: str):
+        custom_dates = extract_dates(recschedule_txt)
+        date_to_schedules = get_schedules_for_dates(custom_dates, recschedule_txt, include_shared_open_rec=True)
+>       assert date_to_schedules[CustomDate(date_str="Thursday, March 3, 2022")]==[
+                Schedule(
+                    date=CustomDate(date_str="Thursday, March 3, 2022"),
+                    start_time="6:00 AM",
+                    end_time="4:00 PM",
+                    location="du Pont DU PONT CT1",
+                ),
+                Schedule(
+                    date=CustomDate(date_str="Thursday, March 3, 2022"),
+                    start_time="6:00 AM",
+                    end_time="4:00 PM",
+                    location="du Pont DU PONT CT2",
+                    shared=True
+                ),
+                Schedule(
+                    date=CustomDate(date_str="Thursday, March 3, 2022"),
+                    start_time="6:00 AM",
+                    end_time="10:30 AM",
+                    location="Rockwell NORTH CT",
+                ),
+                Schedule(
+                    date=CustomDate(date_str="Thursday, March 3, 2022"),
+                    start_time="6:00 AM",
+                    end_time="10:30 AM",
+                    location="Rockwell SOUTH CT",
+                    shared=True
+                ),
+                Schedule(
+                    date=CustomDate(date_str="Thursday, March 3, 2022"),
+                    start_time="7:30 PM",
+                    end_time="11:00 PM",
+                    location="du Pont DU PONT CT1",
+                    shared=True
+                ),
+                Schedule(
+                    date=CustomDate(date_str="Thursday, March 3, 2022"),
+                    start_time="10:00 PM",
+                    end_time="11:00 PM",
+                    location="du Pont DU PONT CT2",
+                    shared=True
+                ),
+            ]
+E       AssertionError: assert [Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='4:00 PM',\n          location='du Pont DU PONT CT1',\n          shared=False),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='10:30 AM',\n          location='Rockwell NORTH CT',\n          shared=False),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='4:00 PM',\n          location='du Pont DU PONT CT2',\n          shared=True),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='10:30 AM',\n          location='Rockwell SOUTH CT',\n          shared=True),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='7:30 PM',\n          end_time='11:00 PM',\n          location='du Pont DU PONT CT1',\n          shared=True),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='10:00 PM',\n          end_time='11:00 PM',\n          location='du Pont DU PONT CT2',\n          shared=True)] == [Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='4:00 PM',\n          location='du Pont DU PONT CT1',\n          shared=False),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='4:00 PM',\n          location='du Pont DU PONT CT2',\n          shared=True),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='10:30 AM',\n          location='Rockwell NORTH CT',\n          shared=False),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='6:00 AM',\n          end_time='10:30 AM',\n          location='Rockwell SOUTH CT',\n          shared=True),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='7:30 PM',\n          end_time='11:00 PM',\n          location='du Pont DU PONT CT1',\n          shared=True),\n Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),\n          start_time='10:00 PM',\n          end_time='11:00 PM',\n          location='du Pont DU PONT CT2',\n          shared=True)]
+E         At index 1 diff: Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'), start_time='6:00 AM', end_time='10:30 AM', location='Rockwell NORTH CT', shared=False) != Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'), start_time='6:00 AM', end_time='4:00 PM', location='du Pont DU PONT CT2', shared=True)
+E         Full diff:
+E           [
+E            Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E                     start_time='6:00 AM',
+E                     end_time='4:00 PM',
+E                     location='du Pont DU PONT CT1',
+E                     shared=False),
+E            Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E                     start_time='6:00 AM',
+E         +           end_time='10:30 AM',
+E         +           location='Rockwell NORTH CT',
+E         +           shared=False),
+E         +  Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E         +           start_time='6:00 AM',
+E                     end_time='4:00 PM',
+E                     location='du Pont DU PONT CT2',
+E                     shared=True),
+E         -  Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E         -           start_time='6:00 AM',
+E         -           end_time='10:30 AM',
+E         -           location='Rockwell NORTH CT',
+E         -           shared=False),
+E            Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E                     start_time='6:00 AM',
+E                     end_time='10:30 AM',
+E                     location='Rockwell SOUTH CT',
+E                     shared=True),
+E            Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E                     start_time='7:30 PM',
+E                     end_time='11:00 PM',
+E                     location='du Pont DU PONT CT1',
+E                     shared=True),
+E            Schedule(date=CustomDate(date_str='Thursday, March 3, 2022'),
+E                     start_time='10:00 PM',
+E                     end_time='11:00 PM',
+E                     location='du Pont DU PONT CT2',
+E                     shared=True),
+E           ]
+
+test/test_parser.py:187: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_parser.py::test_get_schedule_for_dates_include_open_rec - As...
+========================= 1 failed, 4 passed in 0.20s ==========================

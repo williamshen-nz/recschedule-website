@@ -19,12 +19,8 @@ OPENREC_REGEX = (
     r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*Open Recreation -\s+(.*)"
 )
 SHARED_OPENREC_REGEX = (
-    r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*Open Rec \s+(.*)"
+    r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*(Open Rec|Open Recreation) \s+(.*)"
 )
-SHARED_OPENRECREATION_REGEX = (
-    r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*Open Recreation \s+(.*)"
-)
-
 
 def extract_dates(recschedule: str) -> List[CustomDate]:
     """
@@ -42,12 +38,22 @@ def extract_dates(recschedule: str) -> List[CustomDate]:
 
 
 def meet_open_rec_rule(line):
-    return (("Rockwell SOUTH CT" in line) or ("Rockwell NORTH CT" in line) or ("du Pont DU PONT CT" in line)) and (
-            ("Open Rec " in line) or ("Open Recreation" in line)) and ("-" not in line)
+    return (
+        (
+            ("Rockwell SOUTH CT" in line)
+            or ("Rockwell NORTH CT" in line)
+            or ("du Pont DU PONT CT" in line)
+        )
+        and (("Open Rec " in line) or ("Open Recreation" in line))
+        and ("-" not in line)
+    )
 
 
 def filter_for_sport(
-        date: CustomDate, substring: str, sport: str = "Badminton", include_shared_open_rec: bool = False
+    date: CustomDate,
+    substring: str,
+    sport: str = "Badminton",
+    include_shared_open_rec: bool = False,
 ) -> List[Schedule]:
     # FIXME: if you want to add another sport you should alter this
     if sport != "Badminton":
@@ -59,14 +65,14 @@ def filter_for_sport(
         line.strip()
         for idx, line in enumerate(split_text)
         if "Badminton" in line
-           or (
-               # Sometimes the Badminton line item is spread across 2 string
-               # lines, so we explicitly check for that case
-                   idx < len(split_text) - 1
-                   and "Badminton" in split_text[idx + 1]
-                   and "Badminton" not in line
-                   and "Open Rec" in line
-           )
+        or (
+            # Sometimes the Badminton line item is spread across 2 string
+            # lines, so we explicitly check for that case
+            idx < len(split_text) - 1
+            and "Badminton" in split_text[idx + 1]
+            and "Badminton" not in line
+            and "Open Rec" in line
+        )
     ]
 
     # Convert to Schedule objects by matching to regex
@@ -86,7 +92,7 @@ def filter_for_sport(
 
             assert lines[idx + 1] == "Rec.)                       Badminton", lines[
                 idx + 1
-                ]
+            ]
 
             matches = re.findall(OPENREC_REGEX, line)
             assert len(matches) == 1 and len(matches[0]) == 5
@@ -104,14 +110,13 @@ def filter_for_sport(
             if meet_open_rec_rule(line)
         ]
         for idx, line in enumerate(open_rec_lines):
-            matches = re.findall(SHARED_OPENREC_REGEX, line) if "Open Rec " in line \
-                else re.findall(SHARED_OPENRECREATION_REGEX, line)
+            matches = re.findall(SHARED_OPENREC_REGEX, line)
             assert len(matches) == 1
             matches = matches[0]
-            assert len(matches) == 5
+            assert len(matches) == 6
             start_time = matches[0] + " " + matches[1]
             end_time = matches[2] + " " + matches[3]
-            location = matches[4]
+            location = matches[5]
             schedules.append(Schedule(date, start_time, end_time, location, True))
     return schedules
 
@@ -124,13 +129,13 @@ def to_key(schedule: Schedule) -> bool:
     In case of both start and end time being the same, compare location
     """
     time, suffix = schedule.start_time.split()
-    hh, mm = time.split(':')
-    if suffix == 'PM' and hh == "12":
+    hh, mm = time.split(":")
+    if suffix == "PM" and hh == "12":
         hh = "0"
     result = [suffix, int(hh), int(mm)]
     time, suffix = schedule.end_time.split()
-    hh, mm = time.split(':')
-    if suffix == 'PM' and hh == "12":
+    hh, mm = time.split(":")
+    if suffix == "PM" and hh == "12":
         hh = "0"
     result += [suffix, int(hh), int(mm)]
     result += schedule.location
@@ -138,7 +143,10 @@ def to_key(schedule: Schedule) -> bool:
 
 
 def get_schedules_for_dates(
-        dates: List[CustomDate], recschedule: str, sport: str = "Badminton", include_shared_open_rec: bool = False
+    dates: List[CustomDate],
+    recschedule: str,
+    sport: str = "Badminton",
+    include_shared_open_rec: bool = False,
 ) -> Dict[CustomDate, List[Schedule]]:
     """
     Get the line items between dates that we parsed out of the recschedule.
@@ -162,8 +170,12 @@ def get_schedules_for_dates(
 
             substring = recschedule[prev_date_str_idx:str_idx]
             date_to_schedule_strs[prev_date].extend(
-                filter_for_sport(date=prev_date, substring=substring, sport=sport,
-                                 include_shared_open_rec=include_shared_open_rec)
+                filter_for_sport(
+                    date=prev_date,
+                    substring=substring,
+                    sport=sport,
+                    include_shared_open_rec=include_shared_open_rec,
+                )
             )
             if include_shared_open_rec:
                 date_to_schedule_strs[prev_date].sort(key=to_key)
@@ -172,8 +184,12 @@ def get_schedules_for_dates(
         if idx == len(dates) - 1:
             substring = recschedule[str_idx:]
             date_to_schedule_strs[date].extend(
-                filter_for_sport(date=date, substring=substring, sport=sport,
-                                 include_shared_open_rec=include_shared_open_rec)
+                filter_for_sport(
+                    date=date,
+                    substring=substring,
+                    sport=sport,
+                    include_shared_open_rec=include_shared_open_rec,
+                )
             )
             if include_shared_open_rec:
                 date_to_schedule_strs[date].sort(key=to_key)

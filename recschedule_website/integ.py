@@ -2,7 +2,9 @@ from recschedule_website.parser import extract_dates, get_schedules_for_dates
 from recschedule_website.website import write_html_for_schedule
 
 
-def process_recschedule(in_fname: str, out_fname: str, include_shared_open_rec: bool = False) -> None:
+def process_recschedule(
+    in_fname: str, out_fname: str, include_shared_open_rec: bool = False
+) -> None:
     """
     Integrate the different methods together
 
@@ -12,5 +14,7 @@ def process_recschedule(in_fname: str, out_fname: str, include_shared_open_rec: 
     """
     recschedule = open(in_fname, "r").read()
     dates = extract_dates(recschedule)
-    date_to_schedules = get_schedules_for_dates(dates, recschedule, include_shared_open_rec=include_shared_open_rec)
+    date_to_schedules = get_schedules_for_dates(
+        dates, recschedule, include_shared_open_rec=include_shared_open_rec
+    )
     write_html_for_schedule(date_to_schedules, output_html_fname=out_fname)
