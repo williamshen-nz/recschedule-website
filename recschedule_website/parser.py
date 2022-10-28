@@ -146,7 +146,7 @@ def get_schedules_for_dates(
     dates: List[CustomDate],
     recschedule: str,
     sport: str = "Badminton",
-    include_shared_open_rec: bool = False,
+    include_shared_sessions: bool = False,
 ) -> Dict[CustomDate, List[Schedule]]:
     """
     Get the line items between dates that we parsed out of the recschedule.
@@ -174,10 +174,10 @@ def get_schedules_for_dates(
                     date=prev_date,
                     substring=substring,
                     sport=sport,
-                    include_shared_open_rec=include_shared_open_rec,
+                    include_shared_open_rec=include_shared_sessions,
                 )
             )
-            if include_shared_open_rec:
+            if include_shared_sessions:
                 date_to_schedule_strs[prev_date].sort(key=to_key)
 
         # If last element of dates then process that as well
@@ -188,10 +188,10 @@ def get_schedules_for_dates(
                     date=date,
                     substring=substring,
                     sport=sport,
-                    include_shared_open_rec=include_shared_open_rec,
+                    include_shared_open_rec=include_shared_sessions,
                 )
             )
-            if include_shared_open_rec:
+            if include_shared_sessions:
                 date_to_schedule_strs[date].sort(key=to_key)
         # Update index of the current date now we have processed it
         date_to_str_idx[date] = str_idx
