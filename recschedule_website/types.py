@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import ClassVar
 
 import datefinder
 import pytz
@@ -39,12 +40,17 @@ class Schedule:
     start_time: str
     end_time: str
     location: str
+    # Whether the session is shared with other sports
     shared: bool = False
 
+    tooltip_button: ClassVar[str] = '<button class="shared-tooltip">?</button>'
+
     def to_html(self) -> str:
-        tag_for_shared = " - Open Rec<span class='star'>*</span> "
+        shared_html = (
+            f" &ndash; Shared Session {self.tooltip_button}" if self.shared else ""
+        )
         return (
-            f"{self.start_time} - {self.end_time}, {self.location} {tag_for_shared if self.shared else ''} "
+            f"{self.start_time} - {self.end_time}, {self.location} {shared_html}"
             f'<span>[<a href="{self.create_google_calendar_link()}">Google Cal</a>]</span>'
         )
 
@@ -82,6 +88,9 @@ class Schedule:
             f"&details=MIT Badminton Open Recreation%0ASession: {self.start_time} "
             f"to {self.end_time}%0ALocation: {self.location}"
         )
+        if self.shared:
+            # Add note if session is shared
+            url += "%0ANote: this is a shared session with other sports!"
         url += f"&location={LOCATION_TO_ADDRESS.get(self.location, self.location)}"
         url += f"&dates={self.start_time_utc_str}%2F{self.end_time_utc_str}"
         return url.replace(" ", "%20")

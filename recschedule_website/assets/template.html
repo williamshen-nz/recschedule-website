@@ -46,7 +46,9 @@
                             <div class='date'>{{ date }}</div>
                             {% if schedules %}
                                 {% for schedule in schedules %}
-                                    <p>{{ schedule.to_html() }}</p>
+                                    <div class='schedule'>
+                                        <p>{{ schedule.to_html() }}</p>
+                                    </div>
                                 {% endfor %}
                             {% else %}
                                 <p>No sessions.</p>
@@ -72,31 +74,48 @@
                         <div class='date'>{{ date }}</div>
                         {% if schedules %}
                             {% for schedule in schedules %}
-                                <p>{{ schedule.to_html() }}</p>
+                                <div class='schedule'>
+                                    <p>{{ schedule.to_html() }}</p>
+                                </div>
                             {% endfor %}
                         {% else %}
                             <p>No sessions.</p>
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="star">*It is shared session with other sports, so space not guaranteed</div>
+
+                <!-- Legend for shared tooltip -->
+                <div class="legend">
+                    <div class="shared-tooltip zero-margin"></div>
+                    = Shared Open Rec session with other sports, so badminton court space is not guaranteed.
+                </div>
 
                 <!-- Break before footer -->
                 <div class="horizontal-rule"></div>
 
                 <!-- Footer -->
-                <p><strong>Badminton Court Guide:</strong> du Pont courts are very slippery, Rockwell is a lot better.</p>
+                <p><strong>Court Guide:</strong> Rockwell courts are less slippery than du Pont.</p>
                 <p>
-                    <strong>Notes:</strong> this schedule is updated every 30 minutes from the latest recschedule downloaded
-                    (<a href="https://shen.nz/badminton/recschedule-latest.pdf">https://shen.nz/badminton/recschedule-latest.pdf</a>)
-                </p>
-                <p>
+                    <strong>Notes:</strong> updated every 30 minutes from the
+                    <a href="https://shen.nz/badminton/recschedule-latest.pdf">latest recschedule</a> downloaded by the server.
+                    <br>
                     You can find the original recschedule at: <a href="http://web.mit.edu/athletics/www/recschedule.pdf">http://web.mit.edu/athletics/www/recschedule.pdf</a>
                 </p>
-                <p>There is a known issue where your browser may show you an old version of the schedule. This is probably due to client-side caching, etc.</p>
+                <p>
+                </p>
                 <p>There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
                 <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
             </div>
+
+            <!-- For tooltips -->
+            <script src="https://unpkg.com/@popperjs/core@2"></script>
+            <script src="https://unpkg.com/tippy.js@6"></script>
+            <script>
+                tippy('button.shared-tooltip', {
+                    content: 'Shared session with other sports, so space is not guaranteed.',
+                    size: 'large'
+                });
+            </script>
         </div>
     </body>
 </html>

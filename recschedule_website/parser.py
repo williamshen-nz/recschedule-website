@@ -18,9 +18,8 @@ BADMINTON_REGEX = (
 OPENREC_REGEX = (
     r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*Open Recreation -\s+(.*)"
 )
-SHARED_OPENREC_REGEX = (
-    r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*(Open Rec|Open Recreation) \s+(.*)"
-)
+SHARED_OPENREC_REGEX = r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*(Open Rec|Open Recreation) \s+(.*)"
+
 
 def extract_dates(recschedule: str) -> List[CustomDate]:
     """

@@ -181,10 +181,10 @@ def test_get_schedule_for_dates(recschedule_txt: str):
     }
 
 
-def test_get_schedule_for_dates_include_open_rec(recschedule_txt: str):
+def test_get_schedule_for_dates_include_shared_sessions(recschedule_txt: str):
     custom_dates = extract_dates(recschedule_txt)
     date_to_schedules = get_schedules_for_dates(
-        custom_dates, recschedule_txt, include_shared_open_rec=True
+        custom_dates, recschedule_txt, include_shared_sessions=True
     )
     assert date_to_schedules[CustomDate(date_str="Thursday, March 3, 2022")] == [
         Schedule(
