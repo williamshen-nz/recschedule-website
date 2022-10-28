@@ -2,7 +2,7 @@ import re
 from collections import defaultdict
 from typing import Dict, List
 
-from recschedule_website.types import CustomDate, Schedule
+from recschedule_website.types import LOCATION_TO_ADDRESS, CustomDate, Schedule
 
 # Recommend using https://regex101.com/ for debugging
 
@@ -18,7 +18,9 @@ BADMINTON_REGEX = (
 OPENREC_REGEX = (
     r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*Open Recreation -\s+(.*)"
 )
-SHARED_OPENREC_REGEX = r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*(Open Rec|Open Recreation) \s+(.*)"
+SHARED_OPENREC_REGEX = r"(\d{1,2}:\d{2})\s(AM|PM)\s+(\d{1,2}:\d{2})\s(AM|PM)\s+.*(Open Rec|Open Recreation) [^-]\s*(.*)"
+
+BADMINTON_VENUES = LOCATION_TO_ADDRESS.keys()
 
 
 def extract_dates(recschedule: str) -> List[CustomDate]:
@@ -36,23 +38,11 @@ def extract_dates(recschedule: str) -> List[CustomDate]:
     return custom_dates
 
 
-def meet_open_rec_rule(line):
-    return (
-        (
-            ("Rockwell SOUTH CT" in line)
-            or ("Rockwell NORTH CT" in line)
-            or ("du Pont DU PONT CT" in line)
-        )
-        and (("Open Rec " in line) or ("Open Recreation" in line))
-        and ("-" not in line)
-    )
-
-
 def filter_for_sport(
     date: CustomDate,
     substring: str,
     sport: str = "Badminton",
-    include_shared_open_rec: bool = False,
+    include_shared_sessions: bool = True,
 ) -> List[Schedule]:
     # FIXME: if you want to add another sport you should alter this
     if sport != "Badminton":
@@ -60,7 +50,7 @@ def filter_for_sport(
 
     split_text = substring.split("\n")
     # Filter for Badminton strings
-    lines = [
+    badminton_lines = [
         line.strip()
         for idx, line in enumerate(split_text)
         if "Badminton" in line
@@ -76,7 +66,7 @@ def filter_for_sport(
 
     # Convert to Schedule objects by matching to regex
     schedules = []
-    for idx, line in enumerate(lines):
+    for idx, line in enumerate(badminton_lines):
         matches = re.findall(BADMINTON_REGEX, line)
 
         if len(matches) == 1:
@@ -89,9 +79,9 @@ def filter_for_sport(
             if line == "Rec.)                       Badminton":
                 continue
 
-            assert lines[idx + 1] == "Rec.)                       Badminton", lines[
-                idx + 1
-            ]
+            assert (
+                badminton_lines[idx + 1] == "Rec.)                       Badminton"
+            ), badminton_lines[idx + 1]
 
             matches = re.findall(OPENREC_REGEX, line)
             assert len(matches) == 1 and len(matches[0]) == 5
@@ -101,22 +91,26 @@ def filter_for_sport(
         end_time = matches[2] + " " + matches[3]
         location = matches[4]
         # Create Schedule for this entry
-        schedules.append(Schedule(date, start_time, end_time, location, False))
-    if include_shared_open_rec:
-        open_rec_lines = [
-            line.strip()
-            for idx, line in enumerate(split_text)
-            if meet_open_rec_rule(line)
-        ]
-        for idx, line in enumerate(open_rec_lines):
+        schedules.append(Schedule(date, start_time, end_time, location, shared=False))
+
+    # Check for shared sessions
+    if include_shared_sessions:
+        for idx, raw_line in enumerate(split_text):
+            line = raw_line.strip()
             matches = re.findall(SHARED_OPENREC_REGEX, line)
-            assert len(matches) == 1
-            matches = matches[0]
-            assert len(matches) == 6
-            start_time = matches[0] + " " + matches[1]
-            end_time = matches[2] + " " + matches[3]
-            location = matches[5]
-            schedules.append(Schedule(date, start_time, end_time, location, True))
+            if matches:
+                assert len(matches) == 1 and len(matches[0]) == 6
+                matches = matches[0]
+                start_time = matches[0] + " " + matches[1]
+                end_time = matches[2] + " " + matches[3]
+                location = matches[5]
+                # Check location is a badminton one
+                if location not in BADMINTON_VENUES:
+                    continue
+                schedules.append(
+                    Schedule(date, start_time, end_time, location, shared=True)
+                )
+
     return schedules
 
 
@@ -173,7 +167,7 @@ def get_schedules_for_dates(
                     date=prev_date,
                     substring=substring,
                     sport=sport,
-                    include_shared_open_rec=include_shared_sessions,
+                    include_shared_sessions=include_shared_sessions,
                 )
             )
             if include_shared_sessions:
@@ -187,7 +181,7 @@ def get_schedules_for_dates(
                     date=date,
                     substring=substring,
                     sport=sport,
-                    include_shared_open_rec=include_shared_sessions,
+                    include_shared_sessions=include_shared_sessions,
                 )
             )
             if include_shared_sessions:
