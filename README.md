@@ -1,11 +1,11 @@
 # recschedule-website
+See https://shen.nz/badminton for live website.
 
-Parses the `recschedule.pdf` from MIT's website (http://web.mit.edu/athletics/www/recschedule.pdf)
-and generates a filtered version with Badminton.
+Parses the Open Rec Schedule PDF from MIT's website (https://www.mitrecsports.com/work-out/open-recreation/)
+and generates a filtered version with Badminton. Since the PDF URL changes based on the date,
+we scrape the website to get the URL in the [get_latest_recschedule.py](get_latest_recschedule.py) script.
 
-See https://shen.nz/badminton for an example.
-
-**Note:** only badminton is supported for now but should be easy to extend to other sports.
+**Note:** only badminton is supported for now but it should be easy to extend to other sports.
 
 ### Installation
 Python 3.6+ required. Bash script was tested on Ubuntu 18.04 and Mac OS.
@@ -22,7 +22,8 @@ You may need to modify the `run.sh` script to work for your system with the rela
 */30 * * * * cd /home/willshen/recschedule-website && ./run.sh >> run.log 2>&1
 ```
 
-### TODO
-- Unit tests
-- Test on more recschedules
-- Manually verify against some schedules
+### TODOs
+Contributions are very welcome!
+
+- [ ] Fix font-boosting issue on Android Chrome
+- [ ] Change Tooltip color on dark mode to be more visible
