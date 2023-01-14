@@ -4,3 +4,6 @@ Jinja2
 
 dataclasses; python_version < '3.7'
 pytest
+
+requests
+BeautifulSoup4

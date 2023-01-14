@@ -9,14 +9,19 @@ RECSCHEDULE_TXT=recschedule-latest.txt
 current_date=`date`
 echo === "$current_date" ===
 
-curl -s http://web.mit.edu/athletics/www/recschedule.pdf -o $RECSCHEDULE_PDF
+# Get latest recschedule to download
+RECSCHEDULE_URL=`python get_latest_recschedule.py`
+
+# Download recschedule and compute hash
+curl -s $RECSCHEDULE_URL -o $RECSCHEDULE_PDF
 if [ "$(uname)" == "Darwin" ]; then
   md5_hash=$(md5 $RECSCHEDULE_PDF)
 else
   md5_hash=$(md5sum $RECSCHEDULE_PDF)
 fi
+echo "Downloaded recschedule from $RECSCHEDULE_URL (md5=$md5_hash)"
 
-echo "Downloaded recschedule. $md5_hash"
+# Convert recschedule to text and run main script
 pdftotext -layout $RECSCHEDULE_PDF $RECSCHEDULE_TXT
 
 if python main.py $RECSCHEDULE_TXT $HTML_FNAME; then
