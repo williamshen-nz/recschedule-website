@@ -1,3 +1,10 @@
+* {
+    /* Avoid font boosting: https://stackoverflow.com/a/41983984 */
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+}
+
 a {
     color: #1772d0;
     text-decoration: none;
