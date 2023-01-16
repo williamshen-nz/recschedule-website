@@ -22,8 +22,8 @@ You may need to modify the `run.sh` script to work for your system with the rela
 */30 * * * * cd /home/willshen/recschedule-website && ./run.sh >> run.log 2>&1
 ```
 
-### TODOs
+### Issues
 Contributions are very welcome!
 
-- [ ] Fix font-boosting issue on Android Chrome
-- [ ] Change Tooltip color on dark mode to be more visible
+- [ ] [Fix font-boosting issue on Android Chrome](https://github.com/williamshen-nz/recschedule-website/issues/6)
+- [ ] [Change Tooltip color on dark mode to be more visible](https://github.com/williamshen-nz/recschedule-website/issues/7)
