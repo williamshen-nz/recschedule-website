@@ -7,7 +7,7 @@ headers = {"User-Agent": "Mozilla/5.0"}
 
 
 def get_latest_recschedule_url(
-    recschedule_pattern: str = r".*Open-Rec.*.pdf",
+    recschedule_pattern: str = r".*\d{1,2}.\d{1,2}.\d{1,2}-\d{1,2}.\d{1,2}.\d{1,2}.pdf",
     openrec_url: str = "https://www.mitrecsports.com/work-out/open-recreation/",
 ) -> str:
     """
@@ -18,21 +18,22 @@ def get_latest_recschedule_url(
     response = requests.get(openrec_url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Match pattern against hrefs
+    # Match pattern against hrefs and filter for .pdf files
     hrefs = set(a["href"] for a in soup.find_all("a", href=True))
-    matched_hrefs = set(href for href in hrefs if re.match(recschedule_pattern, href))
+    pdfs = set(href for href in hrefs if href.endswith(".pdf"))
+    matched_pdfs = set(pdf for pdf in pdfs if re.match(recschedule_pattern, pdf))
 
-    if len(matched_hrefs) == 0:
+    if len(matched_pdfs) == 0:
         raise ValueError(
             f"No recschedule PDF found with regex pattern '{recschedule_pattern}' at {openrec_url}"
         )
-    elif len(matched_hrefs) > 1:
+    elif len(matched_pdfs) > 1:
         raise ValueError(
-            f"Multiple recschedule PDFs {matched_hrefs} found with regex pattern "
+            f"Multiple recschedule PDFs {matched_pdfs} found with regex pattern "
             f"'{recschedule_pattern}' at {openrec_url}"
         )
     else:
-        return matched_hrefs.pop()
+        return matched_pdfs.pop()
 
 
 if __name__ == "__main__":
