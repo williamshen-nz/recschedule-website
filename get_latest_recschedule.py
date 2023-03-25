@@ -7,7 +7,6 @@ headers = {"User-Agent": "Mozilla/5.0"}
 
 
 def get_latest_recschedule_url(
-    recschedule_pattern: str = r".*\d{1,2}.\d{1,2}.\d{1,2}-\d{1,2}.\d{1,2}.\d{1,2}.pdf",
     openrec_url: str = "https://www.mitrecsports.com/work-out/open-recreation/",
 ) -> str:
     """
@@ -18,22 +17,17 @@ def get_latest_recschedule_url(
     response = requests.get(openrec_url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Match pattern against hrefs and filter for .pdf files
-    hrefs = set(a["href"] for a in soup.find_all("a", href=True))
-    pdfs = set(href for href in hrefs if href.endswith(".pdf"))
-    matched_pdfs = set(pdf for pdf in pdfs if re.match(recschedule_pattern, pdf))
+    # Get anchors and filter for .pdf files
+    anchors = set(a for a in soup.find_all("a", href=True) if a["href"].endswith(".pdf"))
+    anchors = list(anchors)
+    match = ["view open rec schedule" in a.text.lower() for a in anchors]
+    if sum(match) == 0:
+        raise ValueError(f"No recschedule PDF found at {openrec_url}")
+    elif sum(match) > 1:
+        raise ValueError(f"Multiple recschedule PDFs found at {openrec_url}")
 
-    if len(matched_pdfs) == 0:
-        raise ValueError(
-            f"No recschedule PDF found with regex pattern '{recschedule_pattern}' at {openrec_url}"
-        )
-    elif len(matched_pdfs) > 1:
-        raise ValueError(
-            f"Multiple recschedule PDFs {matched_pdfs} found with regex pattern "
-            f"'{recschedule_pattern}' at {openrec_url}"
-        )
-    else:
-        return matched_pdfs.pop()
+    idx = match.index(True)
+    return anchors[idx]["href"]
 
 
 if __name__ == "__main__":
