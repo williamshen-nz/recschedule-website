@@ -1,5 +1,3 @@
-import re
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -11,7 +9,7 @@ def get_latest_recschedule_url(
 ) -> str:
     """
     Determine the URL for the latest recschedule by scraping the MIT Open Rec page
-    and matching against a regex pattern.
+    and finding the anchor href that matches the Open Rec text.
     """
     # Need to inject some headers to make the request look like a browser otherwise get a 403
     response = requests.get(openrec_url, headers=headers)
