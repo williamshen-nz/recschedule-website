@@ -61,6 +61,8 @@ def filter_for_sport(
             and "Badminton" in split_text[idx + 1]
             and "Badminton" not in line
             and "Open Rec" in line
+            and "DAPER" in line
+            and "DAPER" not in split_text[idx + 1]
         )
     ]
 
