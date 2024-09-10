@@ -1,28 +1,27 @@
 # recschedule-website
+
 See https://shen.nz/badminton for live website.
 
-Parses the Open Rec Schedule PDF from MIT's website (https://www.mitrecsports.com/work-out/open-recreation/)
-and generates a filtered version with Badminton. Since the PDF URL changes based on the date,
-we scrape the website to get the URL in the [get_latest_recschedule.py](get_latest_recschedule.py) script.
+Parses the Open Rec Schedule from MIT's Open Recreation Mazevo
+Calendar: https://www.mitrecsports.com/work-out/open-recreation/
 
 **Note:** only badminton is supported for now but it should be easy to extend to other sports.
 
 ### Installation
+
 Python 3.6+ required. Bash script was tested on Ubuntu 18.04 and Mac OS.
 
-1. Install `pdftotext` if you don't have it installed already `sudo apt-get install poppler-utils`
-2. Install the requirements `pip install -r requirements.txt`
-3. Test the script by running `./run.sh`
-4. If it all works, you can install a `crontab` to run the script periodically. See example below.
-
-You may need to modify the `run.sh` script to work for your system with the relative paths, Python versions, etc.
+1. Install the requirements `pip install -r requirements.txt`
+2. Test the script by running `python main.py`
+3. If it all works, you can install a `crontab` to run the script periodically. See example below.
 
 ```
 # Run every 30 minutes and output to log
-*/30 * * * * cd /home/willshen/recschedule-website && ./run.sh >> run.log 2>&1
+*/30 * * * * cd /home/willshen/recschedule-website && python main.py >> run.log 2>&1
 ```
 
 ### Issues
+
 Contributions are very welcome!
 
 - [ ] [Fix font-boosting issue on Android Chrome](https://github.com/williamshen-nz/recschedule-website/issues/6)

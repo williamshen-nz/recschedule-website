@@ -1,3 +1,4 @@
+import json
 import os
 from datetime import datetime
 from typing import Dict, List
@@ -16,7 +17,7 @@ def _determine_template_fname() -> str:
 
 
 def _get_render_dict(
-    date_to_schedules: Dict[CustomDate, List[Schedule]], debug: bool
+    date_to_schedules: Dict[CustomDate, List[Schedule]], request_payload: str, debug: bool
 ) -> Dict:
     """Get dictionary with keys and values for rendering the Jinja template"""
     # Get current time in Boston Timezone
@@ -56,11 +57,12 @@ def _get_render_dict(
         "current_date_str": human_readable_date,
         "past_date_to_schedules": past_date_to_schedules,
         "upcoming_date_to_schedules": upcoming_date_to_schedules,
+        "payload": json.dumps(request_payload, indent=2),
     }
 
 
 def _render_html_template(
-    date_to_schedules: Dict[CustomDate, List[Schedule]], debug: bool
+    date_to_schedules: Dict[CustomDate, List[Schedule]], request_payload: dict, debug: bool
 ) -> str:
     """Load the Jinja template, get the relevant values and render it"""
     # Get File Content in String
@@ -68,18 +70,19 @@ def _render_html_template(
     jinja_template = Template(source=template_str)
 
     # Render template
-    render_dict = _get_render_dict(date_to_schedules, debug)
+    render_dict = _get_render_dict(date_to_schedules, request_payload, debug)
     html = jinja_template.render(**render_dict)
     return html
 
 
 def write_html_for_schedule(
     date_to_schedules: Dict[CustomDate, List[Schedule]],
+    request_payload: dict,
     output_html_fname: str,
     debug: bool = True,
 ) -> None:
     """Render Jinja template and write out to a file"""
-    html = _render_html_template(date_to_schedules, debug)
+    html = _render_html_template(date_to_schedules, request_payload, debug)
     with open(output_html_fname, "w") as f:
         f.write(html)
         if debug:

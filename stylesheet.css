@@ -125,3 +125,10 @@ div.shared-tooltip:before {
 .legend {
     display: inline-block;
 }
+
+/* Payload */
+#payload {
+    font-family: monospace;
+    font-size: 0.8em;
+    color: darkgrey;
+}
