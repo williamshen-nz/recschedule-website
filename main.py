@@ -9,7 +9,7 @@ from recschedule_website.utils import BOSTON_TZ
 from recschedule_website.website import write_html_for_schedule
 
 
-def main(out_fname: str = "index.html", include_shared_sessions: bool = False) -> None:
+def main(out_fname: str = "index.html", include_shared_sessions: bool = True) -> None:
     """
     Main function to generate the schedule
 

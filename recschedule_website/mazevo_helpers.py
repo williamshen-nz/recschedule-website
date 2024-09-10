@@ -10,7 +10,9 @@ endpoint = "https://east.mymazevo.com/api/PublicCalendar/GetEvents"
 api_key = "bcf3ed86c61861024ef5d7bcf30389d7"
 
 
-def get_mazevo_bookings(start_time: datetime, end_time: datetime) -> Tuple[List[dict], dict]:
+def get_mazevo_bookings(
+    start_time: datetime, end_time: datetime
+) -> Tuple[List[dict], dict]:
     """Call Mazevo API to get bookings between start_time and end_time"""
     if start_time >= end_time:
         raise ValueError("Start time must be before end time")
@@ -35,22 +37,62 @@ def get_mazevo_bookings(start_time: datetime, end_time: datetime) -> Tuple[List[
     return bookings, payload
 
 
+def is_shared_session(booking: dict) -> bool:
+    event_name = booking["eventName"].strip()
+    # Event name must exactly match "Open Rec" for shared sessions
+    if event_name != "Open Rec":
+        return False
+
+    building_desc = booking["buildingDescription"]
+    room_desc = booking["roomDescription"]
+
+    # Filter valid badminton rooms inside the buildings
+    if building_desc == "du Pont (W31/32)":
+        return room_desc in {"Du Pont Court 1", "Du Pont Court 2"}
+    elif building_desc == "Rockwell (W33)":
+        return room_desc in {"North Court", "South Court"}
+    else:
+        return False
+
+
+def shorten_building_name(building: str) -> str:
+    if building == "du Pont (W31/32)":
+        return "du Pont"
+    elif building == "Rockwell (W33)":
+        return "Rockwell"
+    else:
+        return building
+
+
+def shorten_room_name(room: str) -> str:
+    if room.startswith("Du Pont"):
+        return room.split("Du Pont ")[1]
+    else:
+        return room
+
+
 def get_badminton_schedules(
-    bookings: List[dict], include_shared_sessions: bool = False
+    bookings: List[dict], include_shared_sessions: bool
 ) -> List[Schedule]:
-    if include_shared_sessions:
-        raise NotImplementedError(f"Shared sessions not implemented yet")
-
-    badminton_bookings = filter(
-        lambda booking: "badminton" in booking["eventName"].lower(), bookings
-    )
     schedules = []
-
-    for booking in badminton_bookings:
+    for booking in bookings:
         if booking["timeZone"] != "Eastern Standard Time":
             raise ValueError(
                 f"Timezone is not Eastern Standard Time: {booking['timeZone']}"
             )
+
+        # Skip booking if it's not a badminton session and shared sessions are excluded
+        is_badminton = "badminton" in booking["eventName"].lower()
+        if not is_badminton and not include_shared_sessions:
+            continue
+
+        # If it's not badminton but shared sessions are included, check if it's shared
+        is_shared = (
+            not is_badminton and include_shared_sessions and is_shared_session(booking)
+        )
+        if not is_badminton and not is_shared:
+            continue
+
         # Format: YYYY-MM-DDTHH:MM:SS-04:00
         start_time = booking["dateTimeStart"]
         end_time = booking["dateTimeEnd"]
@@ -70,8 +112,9 @@ def get_badminton_schedules(
             date=custom_date,
             start_time=start_time.strftime("%-I:%M %p"),
             end_time=end_time.strftime("%-I:%M %p"),
-            location=f"{booking['buildingDescription']} {booking['roomDescription']}",
-            shared=False,
+            building=shorten_building_name(booking["buildingDescription"]),
+            room=shorten_room_name(booking["roomDescription"]),
+            shared=is_shared,
         )
         schedules.append(schedule)
 
