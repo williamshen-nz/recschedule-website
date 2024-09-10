@@ -12,6 +12,8 @@ LOCATION_TO_ADDRESS = {
     "du Pont DU PONT CT2": "du Pont Athletic Gymnasium, Massachusetts Ave, Cambridge, MA 02139, USA",
     "Rockwell NORTH CT": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
     "Rockwell SOUTH CT": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
+    "Rockwell (W33) North Court": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
+    "Rockwell (W33) South Court": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
 }
 
 

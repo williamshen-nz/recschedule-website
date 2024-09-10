@@ -5,7 +5,7 @@ from typing import Dict, List
 import pytz
 from jinja2 import Template
 
-from recschedule_website.types import BOSTON_TZ, CustomDate, Schedule
+from recschedule_website.utils import BOSTON_TZ, CustomDate, Schedule
 
 
 def _determine_template_fname() -> str:
