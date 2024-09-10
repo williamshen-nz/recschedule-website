@@ -11,7 +11,12 @@ endpoint = "https://east.mymazevo.com/api/PublicCalendar/GetEvents"
 
 
 def mazevo_api_key():
-    return os.environ.get("MAZEVO_API_KEY")
+    if "MAZEVO_API_KEY" not in os.environ:
+        raise ValueError(
+            "MAZEVO_API_KEY not found in environment variables. "
+            "You can find it by inspecting the network requests in the Mazevo website."
+        )
+    return os.environ["MAZEVO_API_KEY"]
 
 
 def get_mazevo_bookings(
