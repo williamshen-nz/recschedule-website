@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from recschedule_website.types import CustomDate
+from recschedule_website.utils import CustomDate
 
 
 @pytest.mark.parametrize(

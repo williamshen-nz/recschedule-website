@@ -35,7 +35,7 @@
             <div class="content">
                 <h2 class="title">MIT Open Rec Badminton - Unofficial Schedule</h2>
                 <p>
-                    You should check this website regularly as the schedule is known to update erratically.<br>
+                    You should check this website regularly as the schedule may change unexpectedly.<br>
                     Last updated on {{ current_date_str }} Boston time.
                 </p>
                 <div class="horizontal-rule"></div>
@@ -96,15 +96,14 @@
                 <!-- Footer -->
                 <p><strong>Court Guide:</strong> Rockwell courts are less slippery than du Pont.</p>
                 <p>
-                    <strong>Notes:</strong> updated every 30 minutes from the
-                    <a href="https://shen.nz/badminton/recschedule-latest.pdf">latest recschedule</a> downloaded by the server.
-                    <br>
-                    You can find the original recschedule at: <a href="https://www.mitrecsports.com/work-out/open-recreation/">https://www.mitrecsports.com/work-out/open-recreation/</a>
+                    Updated every 30 minutes from the <a href="https://east.mymazevo.com/calendar?code=RXphMEplcUJrNXhtelI0WitsVXJMK1Q5YmpWaTlJQkprZmYwVVhsOW94cm92aDJGcWNFYklMUzNtZ1h5Qmg2UnMwS2tCU0dBa1ZlMEZ0azNmbHptdUdYbGgvZW90MXExVWR2dXVJN1ovK3BoQm9uR0pndkpuMmU1bnp1bm5CcmM">
+                    Mazevo calendar</a>.
+                    There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.
                 </p>
-                <p>
-                </p>
-                <p>There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.</p>
                 <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
+
+                <!-- Debug payload -->
+                <p id="payload"><strong>Request Payload:</strong> {{ payload }}</p>
             </div>
 
             <!-- For tooltips -->

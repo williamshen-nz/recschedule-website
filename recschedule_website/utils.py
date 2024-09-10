@@ -7,11 +7,9 @@ import pytz
 
 BOSTON_TZ = pytz.timezone("America/New_York")
 
-LOCATION_TO_ADDRESS = {
-    "du Pont DU PONT CT1": "du Pont Athletic Gymnasium, Massachusetts Ave, Cambridge, MA 02139, USA",
-    "du Pont DU PONT CT2": "du Pont Athletic Gymnasium, Massachusetts Ave, Cambridge, MA 02139, USA",
-    "Rockwell NORTH CT": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
-    "Rockwell SOUTH CT": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
+BUILDING_TO_ADDRESS = {
+    "du Pont": "du Pont Athletic Gymnasium, Massachusetts Ave, Cambridge, MA 02139, USA",
+    "Rockwell": "Rockwell Cage, 120 Vassar St, Cambridge, MA 02139, USA",
 }
 
 
@@ -39,11 +37,21 @@ class Schedule:
     date: CustomDate
     start_time: str
     end_time: str
-    location: str
+    building: str
+    room: str
+
     # Whether the session is shared with other sports
     shared: bool = False
 
     tooltip_button: ClassVar[str] = '<button class="shared-tooltip">?</button>'
+
+    def __post_init__(self):
+        if self.building not in BUILDING_TO_ADDRESS:
+            raise ValueError(f"Building {self.building} not recognized")
+
+    @property
+    def location(self):
+        return f"{self.building} {self.room}"
 
     def to_html(self) -> str:
         shared_html = (
@@ -91,6 +99,6 @@ class Schedule:
         if self.shared:
             # Add note if session is shared
             url += "%0ANote: this is a shared session with other sports!"
-        url += f"&location={LOCATION_TO_ADDRESS.get(self.location, self.location)}"
+        url += f"&location={BUILDING_TO_ADDRESS.get(self.building, self.building)}"
         url += f"&dates={self.start_time_utc_str}%2F{self.end_time_utc_str}"
         return url.replace(" ", "%20")
