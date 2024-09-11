@@ -21,6 +21,7 @@ body {
     font-size: 1em;
     overflow-wrap: break-word;
     background-color: #fbfcfd;
+    color: black;
     margin: 0 0;
 }
 
@@ -58,21 +59,6 @@ p {
     max-width: 800px;
     border-radius: 10px;
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%)
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        color: white;
-        background-color: #0d0d0d;
-    }
-
-    a {
-        color: #7bbdfe;
-    }
-
-    .wrapper {
-        background-color: #222222;
-    }
 }
 
 .content {
@@ -146,4 +132,24 @@ div.shared-tooltip:before {
     font-family: monospace;
     font-size: 0.8em;
     color: darkgrey;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: white;
+        background-color: #0d0d0d;
+    }
+
+    a {
+        color: #7bbdfe;
+    }
+
+    .wrapper {
+        background-color: #222222;
+    }
+
+    .shared-tooltip {
+        background-color: #1c6f9c;
+    }
 }
