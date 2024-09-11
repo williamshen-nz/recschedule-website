@@ -57,7 +57,7 @@ def _get_render_dict(
         "current_date_str": human_readable_date,
         "past_date_to_schedules": past_date_to_schedules,
         "upcoming_date_to_schedules": upcoming_date_to_schedules,
-        "payload": json.dumps(request_payload, indent=2),
+        "payload": json.dumps(request_payload),
     }
 
 

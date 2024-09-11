@@ -60,6 +60,21 @@ p {
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%)
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        color: white;
+        background-color: #0d0d0d;
+    }
+
+    a {
+        color: #7bbdfe;
+    }
+
+    .wrapper {
+        background-color: #222222;
+    }
+}
+
 .content {
     padding: 2em 2em;
 }
