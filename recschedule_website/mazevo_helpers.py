@@ -108,9 +108,9 @@ def get_badminton_schedules(
         start_time = booking["dateTimeStart"]
         end_time = booking["dateTimeEnd"]
 
-        # Strip the timezone and parse
-        assert start_time.endswith("-04:00")
-        assert end_time.endswith("-04:00")
+        # Strip the timezone and parse (need to consider daylight saving time)
+        assert start_time.endswith("-04:00") or start_time.endswith("-05:00")
+        assert end_time.endswith("-04:00") or end_time.endswith("-05:00")
         start_time = datetime.strptime(start_time[:-6], "%Y-%m-%dT%H:%M:%S")
         end_time = datetime.strptime(end_time[:-6], "%Y-%m-%dT%H:%M:%S")
         assert start_time.date() == end_time.date()
