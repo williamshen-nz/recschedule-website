@@ -75,10 +75,6 @@ span {
     white-space: pre;
 }
 
-#show {
-    margin-bottom: 1em;
-}
-
 #schedules > .date:first-child {
     margin-top: 0.7em;
 }
@@ -127,11 +123,197 @@ div.shared-tooltip:before {
     display: inline-block;
 }
 
+/* Footer */
+footer {
+    margin-top: 1.5rem;
+}
+
+.last-updated {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
 /* Payload */
 #payload {
     font-family: monospace;
     font-size: 0.8em;
     color: darkgrey;
+}
+
+/* Facilities Notice Popup */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.popup-content {
+    background: #fafbfc;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e1e8ed;
+    animation: popupSlideIn 0.3s ease-out;
+}
+
+@keyframes popupSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.popup-header {
+    padding: 1.5rem 1.5rem 0;
+    border-bottom: 1px solid #e8ecef;
+}
+
+.popup-header h3 {
+    margin: 0 0 1rem;
+    color: #4a5568;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.popup-body {
+    padding: 1.5rem;
+    line-height: 1.6;
+}
+
+.popup-body p {
+    margin: 0 0 1rem;
+    color: #2d3748;
+}
+
+.popup-body ul {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+}
+
+.popup-body li {
+    margin-bottom: 0.25rem;
+    color: #4a5568;
+}
+
+.popup-body .checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.popup-body .checklist li {
+    color: #38a169;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.popup-body .warning-text {
+    background: #fef5e7;
+    border: 1px solid #f6e05e;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin: 1rem 0 0;
+    color: #975a16;
+    font-weight: 500;
+}
+
+.popup-footer {
+    padding: 0 1.5rem 1.5rem;
+    text-align: right;
+}
+
+.acknowledge-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 220px;
+}
+
+.acknowledge-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.acknowledge-btn:active {
+    transform: translateY(1px);
+}
+
+/* Show facilities notice button */
+.facilities-notice-section {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.show-notice-btn {
+    background: #f7fafc;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.show-notice-btn:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+}
+
+/* Mobile responsive popup */
+@media (max-width: 768px) {
+    .popup-overlay {
+        padding: 0.5rem;
+    }
+    
+    .popup-content {
+        margin: 0;
+        max-width: none;
+        width: 100%;
+        border-radius: 8px;
+    }
+    
+    .popup-header {
+        padding: 1rem 1rem 0;
+    }
+    
+    .popup-body {
+        padding: 1rem;
+    }
+    
+    .popup-footer {
+        padding: 0 1rem 1rem;
+    }
+    
+    .acknowledge-btn {
+        width: 100%;
+        min-width: auto;
+    }
 }
 
 /* Dark Mode */
@@ -151,5 +333,65 @@ div.shared-tooltip:before {
 
     .shared-tooltip {
         background-color: #1c6f9c;
+    }
+    
+    /* Dark mode popup styles */
+    .popup-content {
+        background: #1a202c;
+        color: #e2e8f0;
+        border-color: #2d3748;
+    }
+    
+    .popup-header {
+        border-bottom-color: #2d3748;
+    }
+    
+    .popup-header h3 {
+        color: #a0aec0;
+    }
+    
+    .popup-body p {
+        color: #e2e8f0;
+    }
+    
+    .popup-body li {
+        color: #cbd5e0;
+    }
+    
+    .popup-body .checklist li {
+        color: #68d391;
+    }
+    
+    .popup-body .warning-text {
+        background: #2d2017;
+        border-color: #4a4520;
+        color: #fbb041;
+    }
+    
+    .acknowledge-btn {
+        background: #667eea;
+        color: white;
+    }
+    
+    .acknowledge-btn:hover {
+        background: #5a67d8;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Dark mode show notice button */
+    .show-notice-btn {
+        background: #2d3748;
+        color: #e2e8f0;
+        border-color: #4a5568;
+    }
+    
+    .show-notice-btn:hover {
+        background: #4a5568;
+        border-color: #718096;
+    }
+    
+    /* Dark mode footer */
+    .last-updated {
+        color: #a0aec0;
     }
 }

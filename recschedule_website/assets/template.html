@@ -12,19 +12,43 @@
         <link rel="icon" type="image/png" href="https://shen.nz/images/mit_logo.svg">
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
 
-        <!-- For showing/hiding previous sessions -->
         <script type="text/javascript">
-            function showOldSchedules() {
-                document.getElementById('old-schedules').style.display='block';
-                document.getElementById('show').style.display='none';
-                document.getElementById('hide').style.display='block';
+            // Facilities notice popup functionality
+            function showFacilitiesNotice() {
+                const lastDismissed = localStorage.getItem('facilitiesNoticeDismissed');
+                const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                
+                if (!lastDismissed || parseInt(lastDismissed) < oneWeekAgo) {
+                    document.getElementById('facilities-popup').style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    document.getElementById('show-notice-btn').style.display = 'none';
+                }
             }
 
-            function hideOldSchedules() {
-                document.getElementById('old-schedules').style.display='none';
-                document.getElementById('show').style.display='block';
-                document.getElementById('hide').style.display='none';
+            function showFacilitiesNoticeManually() {
+                document.getElementById('facilities-popup').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                document.getElementById('show-notice-btn').style.display = 'none';
             }
+
+            function dismissFacilitiesNotice() {
+                localStorage.setItem('facilitiesNoticeDismissed', Date.now().toString());
+                document.getElementById('facilities-popup').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                document.getElementById('show-notice-btn').style.display = 'inline-block';
+            }
+
+            // Show popup on page load and handle button visibility
+            window.addEventListener('load', function() {
+                const lastDismissed = localStorage.getItem('facilitiesNoticeDismissed');
+                const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                
+                if (!lastDismissed || parseInt(lastDismissed) < oneWeekAgo) {
+                    showFacilitiesNotice();
+                } else {
+                    document.getElementById('show-notice-btn').style.display = 'inline-block';
+                }
+            });
         </script>
 
         <!-- Open all links (i.e. Google Calendar) in new tab -->
@@ -32,44 +56,44 @@
     </head>
 
     <body>
+        <!-- Facilities Notice Popup -->
+        <div id="facilities-popup" class="popup-overlay">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h3>📋 Important Message from MIT Facilities</h3>
+                </div>
+                <div class="popup-body">
+                    <p>Our facilities team has noticed issues after badminton sessions:</p>
+                    <ul>
+                        <li>Shuttlecocks left scattered around courts</li>
+                        <li>Nets left up or improperly stored</li>
+                        <li>General cleanup not being done</li>
+                    </ul>
+                    <p><strong>Please help us maintain these spaces:</strong></p>
+                    <ul class="checklist">
+                        <li>✓ Clean up shuttlecocks after play</li>
+                        <li>✓ Properly take down and store nets</li>
+                        <li>✓ Leave courts as you found them</li>
+                    </ul>
+                    <p class="warning-text">If these issues continue, we may need to reduce open rec offerings.</p>
+                </div>
+                <div class="popup-footer">
+                    <button onclick="dismissFacilitiesNotice()" class="acknowledge-btn" target="_self">
+                        Got it, don't show again for a week
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="wrapper">
             <div class="content">
                 <h2 class="title">MIT Open Rec Badminton - Unofficial Schedule</h2>
                 <p>
-                    You should check this website regularly as the schedule may change unexpectedly.<br>
-                    Last updated on {{ current_date_str }} Boston time.
+                    You should check this website regularly as the schedule may change unexpectedly.
                 </p>
                 <div class="horizontal-rule"></div>
-                {% if past_date_to_schedules %}
-                    <div id='old-schedules' style='display: none;'>
-                        <h3 class="session-title">Past Sessions</h3>
-                        {% for date, schedules in past_date_to_schedules.items() %}
-                            <div class='date'>{{ date }}</div>
-                            {% if schedules %}
-                                {% for schedule in schedules %}
-                                    <div class='schedule'>
-                                        <p>{{ schedule.to_html() }}</p>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                <p>No sessions.</p>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="date"></div>
-                    </div>
 
-                    <!-- Show and hide buttons for past sessions -->
-                    <div id="show">
-                        <a href="javascript:void(0)" target="_self" onclick="showOldSchedules()">Show previous sessions</a>
-                    </div>
-                    <div id="hide" style="display:none;">
-                        <a href="javascript:void(0)" target="_self" onclick="hideOldSchedules()">Hide previous sessions</a>
-                        <div class="horizontal-rule"></div>
-                        <h3 class="session-title">Upcoming Sessions</h3>
-                    </div>
-                {% endif %}
-
-                <!-- Upcoming Sessions -->
+                <!-- Sessions -->
                 <div id="schedules">
                     {% for date, schedules in upcoming_date_to_schedules.items() %}
                         <div class='date'>{{ date }}</div>
@@ -95,16 +119,23 @@
                 <div class="horizontal-rule"></div>
 
                 <!-- Footer -->
-                <p><strong>Court Guide:</strong> Rockwell courts are less slippery than du Pont.</p>
-                <p>
-                    Updated every 10 minutes from the <a href="https://east.mymazevo.com/calendar?code=RXphMEplcUJrNXhtelI0WitsVXJMK1Q5YmpWaTlJQkprZmYwVVhsOW94cm92aDJGcWNFYklMUzNtZ1h5Qmg2UnMwS2tCU0dBa1ZlMEZ0azNmbHptdUdYbGgvZW90MXExVWR2dXVJN1ovK3BoQm9uR0pndkpuMmU1bnp1bm5CcmM">
-                    Mazevo calendar</a>.
-                    There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.
-                </p>
-                <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
+                <footer>
+                    <!-- Show facilities notice button -->
+                    <div class="facilities-notice-section">
+                        <button id="show-notice-btn" onclick="showFacilitiesNoticeManually()" class="show-notice-btn" style="display: none;" target="_self">
+                            📋 Show facilities notice
+                        </button>
+                    </div>
 
-                <!-- Debug payload -->
-                <p id="payload"><strong>Request Payload:</strong> {{ payload }}</p>
+                    <p><strong>Court Guide:</strong> Rockwell courts are less slippery than du Pont.</p>
+                    <p>
+                        Updated every 10 minutes from the <a href="https://east.mymazevo.com/calendar?code=RXphMEplcUJrNXhtelI0WitsVXJMK1Q5YmpWaTlJQkprZmYwVVhsOW94cm92aDJGcWNFYklMUzNtZ1h5Qmg2UnMwS2tCU0dBa1ZlMEZ0azNmbHptdUdYbGgvZW90MXExVWR2dXVJN1ovK3BoQm9uR0pndkpuMmU1bnp1bm5CcmM">
+                        Mazevo calendar</a>.
+                        There is no guarantee for accuracy. Please contact willshen at mit.edu with any questions or issues.
+                    </p>
+                    <p><a href="https://github.com/williamshen-nz/recschedule-website">Open Source on GitHub</a>. Feel free to contribute!</p>
+                    <p class="last-updated">Last updated on {{ current_date_str }} Boston time.</p>
+                </footer>
             </div>
 
             <!-- For tooltips -->
