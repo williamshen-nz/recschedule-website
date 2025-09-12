@@ -162,9 +162,10 @@ span {
 }
 
 .badge-demo.dedicated {
-    background: #d1f2eb;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background: #c6f6d5;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+    font-weight: 600;
 }
 
 /* ===== FACILITIES NOTICE POPUP ===== */
@@ -503,8 +504,9 @@ footer {
     }
     
     .badge-demo.dedicated {
-        background: #1e3a20;
-        color: #9ae6b4;
-        border-color: #38a169;
+        background: #22543d;
+        color: #c6f6d5;
+        border-color: #48bb78;
+        font-weight: 600;
     }
 }
