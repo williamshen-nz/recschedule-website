@@ -1,19 +1,9 @@
+/* ===== RESET & BASE STYLES ===== */
 * {
     /* Avoid font boosting: https://stackoverflow.com/a/41983984 */
     -webkit-text-size-adjust: none;
     -moz-text-size-adjust: none;
     -ms-text-size-adjust: none;
-}
-
-a {
-    color: #1772d0;
-    text-decoration: none;
-}
-
-a:focus,
-a:hover {
-    color: #f09228;
-    text-decoration: none;
 }
 
 body {
@@ -25,6 +15,19 @@ body {
     margin: 0 0;
 }
 
+/* ===== LINKS ===== */
+a {
+    color: #1772d0;
+    text-decoration: none;
+}
+
+a:focus,
+a:hover {
+    color: #f09228;
+    text-decoration: none;
+}
+
+/* ===== TYPOGRAPHY ===== */
 .title {
     font-size: 1.5em;
     margin-top: 0;
@@ -46,15 +49,50 @@ p {
     line-height: 1.35;
 }
 
+span {
+    /* Force line-break if Google Calendar link spans multiple lines */
+    white-space: pre;
+}
+
+/* ===== LAYOUT ===== */
+.wrapper {
+    margin: 2em auto;
+    background-color: #fff;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    width: calc(90% - 16px);
+    max-width: 750px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%)
+}
+
+.content {
+    padding: 2em 2em;
+}
+
+.horizontal-rule {
+    border-top: 2px solid #d2d2d2;
+    margin: 1em 0;
+}
+
+.zero-margin {
+    margin: 0 !important;
+}
+
+/* ===== SCHEDULES ===== */
 #schedules {
     margin-bottom: 1.2em;
 }
 
-/* Schedule styling */
+#schedules > .date:first-child {
+    margin-top: 0.7em;
+}
+
 .schedule {
     margin-bottom: 0.5em;
 }
 
+/* ===== CALENDAR LINK ===== */
 .calendar-link {
     text-decoration: none;
     margin-left: 0.5rem;
@@ -82,92 +120,7 @@ p {
     vertical-align: middle;
 }
 
-/* Mobile responsive for schedule items */
-@media (max-width: 480px) {
-    .schedule p {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        line-height: 1.4;
-    }
-    
-    /* Reduce margins on mobile but keep some spacing */
-    .badge-demo {
-        margin-left: 0.25rem;
-    }
-    
-    .calendar-link {
-        margin-left: 0.25rem;
-    }
-    
-    /* Use CSS to handle spacing between badge and calendar more elegantly */
-    .badge-demo + .calendar-link {
-        margin-left: 0.5rem;
-    }
-    
-    /* Make legend stack vertically on mobile */
-    .legend {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: flex-start;
-        text-align: left;
-    }
-    
-    .legend-item {
-        width: 100%;
-    }
-}
-
-.wrapper {
-    margin: 2em auto;
-    background-color: #fff;
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    width: calc(90% - 16px);
-    max-width: 750px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%)
-}
-
-.content {
-    padding: 2em 2em;
-}
-
-.horizontal-rule {
-    border-top: 2px solid #d2d2d2;
-    margin: 1em 0;
-}
-
-span {
-    /* Force line-break if Google Calendar link spans multiple lines */
-    white-space: pre;
-}
-
-#schedules > .date:first-child {
-    margin-top: 0.7em;
-}
-
-@media (max-width: 769px) {
-    .wrapper {
-        margin: 0 0;
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .content {
-        padding: 1em 1em;
-    }
-
-    .popup-content {
-        margin: 0 1rem !important;
-    }
-}
-
-
-.zero-margin {
-    margin: 0 !important;
-}
-
+/* ===== LEGEND ===== */
 .legend {
     display: flex;
     align-items: center;
@@ -186,6 +139,7 @@ span {
     flex-shrink: 0;
 }
 
+/* ===== BADGES ===== */
 .badge-demo {
     padding: 0.1rem 0.3rem;
     margin-left: 0.5rem;
@@ -197,7 +151,6 @@ span {
     line-height: 1;
 }
 
-/* Remove left margin from badges in legend */
 .legend .badge-demo {
     margin-left: 0;
 }
@@ -214,26 +167,7 @@ span {
     border: 1px solid #c3e6cb;
 }
 
-/* Footer */
-footer {
-    margin-top: 1.5rem;
-}
-
-.last-updated {
-    font-size: 0.875rem;
-    color: #718096;
-    margin-top: 1rem;
-    font-style: italic;
-}
-
-/* Payload */
-#payload {
-    font-family: monospace;
-    font-size: 0.8em;
-    color: darkgrey;
-}
-
-/* Facilities Notice Popup */
+/* ===== FACILITIES NOTICE POPUP ===== */
 .popup-overlay {
     display: none;
     position: fixed;
@@ -328,6 +262,7 @@ footer {
     text-align: right;
 }
 
+/* ===== BUTTONS ===== */
 .acknowledge-btn {
     background: #63b3ed;
     color: white;
@@ -353,12 +288,6 @@ footer {
     transform: translateY(1px);
 }
 
-/* Show facilities notice button */
-.facilities-notice-section {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-
 .show-notice-btn {
     background: #f7fafc;
     color: #4a5568;
@@ -378,7 +307,41 @@ footer {
     transform: translateY(-1px);
 }
 
-/* Mobile responsive popup */
+/* ===== FOOTER ===== */
+footer {
+    margin-top: 1.5rem;
+}
+
+.facilities-notice-section {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.last-updated {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* ===== LEGACY/UNUSED ===== */
+#payload {
+    font-family: monospace;
+    font-size: 0.8em;
+    color: darkgrey;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet and below (769px) */
+@media (max-width: 769px) {
+    .wrapper {
+        margin: 0 0;
+        width: 100%;
+    }
+}
+
+/* Mobile (768px and below) */
 @media (max-width: 768px) {
     .popup-content {
         margin: 0 2.5rem;
@@ -405,7 +368,47 @@ footer {
     }
 }
 
-/* Dark Mode */
+/* Small mobile (480px and below) */
+@media (max-width: 480px) {
+    .content {
+        padding: 1em 1em;
+    }
+
+    .popup-content {
+        margin: 0 1rem !important;
+    }
+    
+    .schedule p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.4;
+    }
+    
+    .badge-demo {
+        margin-left: 0.25rem;
+    }
+    
+    .calendar-link {
+        margin-left: 0.25rem;
+    }
+    
+    .badge-demo + .calendar-link {
+        margin-left: 0.5rem;
+    }
+    
+    .legend {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .legend-item {
+        width: 100%;
+    }
+}
+
+/* ===== DARK MODE ===== */
 @media (prefers-color-scheme: dark) {
     body {
         color: white;
@@ -420,8 +423,6 @@ footer {
         background-color: #222222;
     }
 
-    
-    /* Dark mode popup styles */
     .popup-content {
         background: #1a202c;
         color: #e2e8f0;
@@ -464,7 +465,6 @@ footer {
         box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
     }
     
-    /* Dark mode show notice button */
     .show-notice-btn {
         background: #2d3748;
         color: #e2e8f0;
@@ -476,12 +476,10 @@ footer {
         border-color: #718096;
     }
     
-    /* Dark mode footer */
     .last-updated {
         color: #a0aec0;
     }
     
-    /* Dark mode calendar link */
     .calendar-link {
         opacity: 0.7;
         background: rgba(255, 255, 255, 0.05);
@@ -494,7 +492,6 @@ footer {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     
-    /* Dark mode legend and badges */
     .legend {
         color: #a0aec0;
     }
