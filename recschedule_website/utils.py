@@ -53,14 +53,34 @@ class Schedule:
     def location(self):
         return f"{self.building} {self.room}"
 
-    def to_html(self) -> str:
-        shared_html = (
-            f" &ndash; Shared Session {self.tooltip_button}" if self.shared else ""
-        )
-        return (
-            f"{self.start_time} - {self.end_time}, {self.location} {shared_html}"
-            f'<span>[<a href="{self.create_google_calendar_link()}">Google Cal</a>]</span>'
-        )
+    def _format_time(self, time_str: str) -> str:
+        """Format time by removing :00 from whole hours and spaces (e.g., '6:00 AM' -> '6AM')"""
+        formatted = time_str
+        if ":00 " in formatted:
+            formatted = formatted.replace(":00 ", "")
+        else:
+            formatted = formatted.replace(" ", "")
+        return formatted
+
+    @property
+    def formatted_start_time(self) -> str:
+        return self._format_time(self.start_time)
+    
+    @property
+    def formatted_end_time(self) -> str:
+        return self._format_time(self.end_time)
+    
+    @property
+    def badge_type(self) -> str:
+        return "shared" if self.shared else "dedicated"
+    
+    @property
+    def badge_text(self) -> str:
+        return "S" if self.shared else "D"
+    
+    @property
+    def badge_label(self) -> str:
+        return "Shared session" if self.shared else "Dedicated badminton session"
 
     def hh_mm_to_utc_str(self, hh_mm_str: str) -> str:
         # Input format = \d{1,2}:\d{2} AM|PM

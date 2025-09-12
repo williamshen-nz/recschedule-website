@@ -27,7 +27,7 @@ def main(out_fname: str = "index.html", include_shared_sessions: bool = True) ->
     print(f"Including shared sessions: {include_shared_sessions}")
     print(f"Start time: {start_time}, End time: {end_time}")
 
-    bookings, payload = get_mazevo_bookings(start_time, end_time)
+    bookings, _ = get_mazevo_bookings(start_time, end_time)
     schedules = get_badminton_schedules(
         bookings, include_shared_sessions=include_shared_sessions
     )
@@ -36,9 +36,7 @@ def main(out_fname: str = "index.html", include_shared_sessions: bool = True) ->
     for schedule in schedules:
         date_to_schedules[schedule.date].append(schedule)
 
-    write_html_for_schedule(
-        date_to_schedules, request_payload=payload, output_html_fname=out_fname
-    )
+    write_html_for_schedule(date_to_schedules, output_html_fname=out_fname)
 
 
 if __name__ == "__main__":
