@@ -89,9 +89,20 @@
             <div class="content">
                 <h2 class="title">MIT Open Rec Badminton - Unofficial Schedule</h2>
                 <p>
-                    You should check this website regularly as the schedule may change unexpectedly.
+                    Schedule may change, check regularly.
                 </p>
-                <div class="horizontal-rule"></div>
+                
+                <!-- Legend for session types -->
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="badge-demo shared">S</span>
+                        <span>Shared with other sports - space not guaranteed</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="badge-demo dedicated">D</span>
+                        <span>Dedicated badminton court</span>
+                    </div>
+                </div>
 
                 <!-- Sessions -->
                 <div id="schedules">
@@ -99,20 +110,20 @@
                         <div class='date'>{{ date }}</div>
                         {% if schedules %}
                             {% for schedule in schedules %}
-                                <div class='schedule'>
-                                    <p>{{ schedule.to_html() }}</p>
+                                <div class='schedule {% if schedule.shared %}shared-session{% else %}dedicated-session{% endif %}'>
+                                    <p>
+                                        {{ schedule.formatted_start_time }} - {{ schedule.formatted_end_time }}, {{ schedule.location }}
+                                        <span class="badge-demo {{ schedule.badge_type }}" aria-label="{{ schedule.badge_label }}">{{ schedule.badge_text }}</span>
+                                        <a href="{{ schedule.create_google_calendar_link() }}" class="calendar-link">
+                                            <img src="recschedule_website/assets/gcal.svg" class="gcal-icon" alt="Add to Google Calendar">
+                                        </a>
+                                    </p>
                                 </div>
                             {% endfor %}
                         {% else %}
                             <p>No sessions.</p>
                         {% endif %}
                     {% endfor %}
-                </div>
-
-                <!-- Legend for shared tooltip -->
-                <div class="legend">
-                    <div class="shared-tooltip zero-margin"></div>
-                    = Shared Open Rec session with other sports, so badminton court space is not guaranteed.
                 </div>
 
                 <!-- Break before footer -->
@@ -138,15 +149,6 @@
                 </footer>
             </div>
 
-            <!-- For tooltips -->
-            <script src="https://unpkg.com/@popperjs/core@2"></script>
-            <script src="https://unpkg.com/tippy.js@6"></script>
-            <script>
-                tippy('button.shared-tooltip', {
-                    content: 'Shared session with other sports, so space is not guaranteed.',
-                    size: 'large'
-                });
-            </script>
         </div>
     </body>
 </html>

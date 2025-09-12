@@ -17,7 +17,7 @@ a:hover {
 }
 
 body {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     font-size: 1em;
     overflow-wrap: break-word;
     background-color: #fbfcfd;
@@ -50,13 +50,80 @@ p {
     margin-bottom: 1.2em;
 }
 
+/* Schedule styling */
+.schedule {
+    margin-bottom: 0.5em;
+}
+
+.calendar-link {
+    text-decoration: none;
+    margin-left: 0.5rem;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    display: inline-block;
+    padding: 0.125rem;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.calendar-link:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gcal-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+/* Mobile responsive for schedule items */
+@media (max-width: 480px) {
+    .schedule p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.4;
+    }
+    
+    /* Reduce margins on mobile but keep some spacing */
+    .badge-demo {
+        margin-left: 0.25rem;
+    }
+    
+    .calendar-link {
+        margin-left: 0.25rem;
+    }
+    
+    /* Use CSS to handle spacing between badge and calendar more elegantly */
+    .badge-demo + .calendar-link {
+        margin-left: 0.5rem;
+    }
+    
+    /* Make legend stack vertically on mobile */
+    .legend {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .legend-item {
+        width: 100%;
+    }
+}
+
 .wrapper {
     margin: 2em auto;
     background-color: #fff;
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
     width: calc(90% - 16px);
-    max-width: 800px;
+    max-width: 750px;
     border-radius: 10px;
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%)
 }
@@ -86,41 +153,65 @@ span {
     }
 }
 
-@media (max-width: 426px) {
+@media (max-width: 480px) {
     .content {
-        padding: 1.2em 1.2em;
+        padding: 1em 1em;
+    }
+
+    .popup-content {
+        margin: 0 1rem !important;
     }
 }
 
-/* Tooltip */
-.shared-tooltip {
-    display: inline-block;
-    height: 1.5em;
-    width: 1.5em;
-    background-color: #BCDBEA;
-    border-radius: 50%;
-    border-style: none;
-    margin-left: 0.2em;
-    margin-right: 0.5em;
-    padding: 0;
-    font-size: 0.9em;
-    text-align: center;
-}
-
-div.shared-tooltip:before {
-    content: "?";
-}
-
-.shared-tooltip:hover {
-    cursor: help;
-}
 
 .zero-margin {
     margin: 0 !important;
 }
 
 .legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    color: #4a5568;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.badge-demo {
+    padding: 0.1rem 0.3rem;
+    margin-left: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.9;
     display: inline-block;
+    line-height: 1;
+}
+
+/* Remove left margin from badges in legend */
+.legend .badge-demo {
+    margin-left: 0;
+}
+
+.badge-demo.shared {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.badge-demo.dedicated {
+    background: #d1f2eb;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 /* Footer */
@@ -154,7 +245,6 @@ footer {
     z-index: 1000;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
 }
 
 .popup-content {
@@ -239,22 +329,24 @@ footer {
 }
 
 .acknowledge-btn {
-    background: #667eea;
+    background: #63b3ed;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     cursor: pointer;
     transition: all 0.2s ease;
     min-width: 220px;
+    box-shadow: 0 2px 4px rgba(99, 179, 237, 0.2);
 }
 
 .acknowledge-btn:hover {
-    background: #5a67d8;
+    background: #4299e1;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 6px 16px rgba(99, 179, 237, 0.4);
 }
 
 .acknowledge-btn:active {
@@ -275,6 +367,7 @@ footer {
     border-radius: 6px;
     font-size: 0.875rem;
     font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -287,12 +380,8 @@ footer {
 
 /* Mobile responsive popup */
 @media (max-width: 768px) {
-    .popup-overlay {
-        padding: 0.5rem;
-    }
-    
     .popup-content {
-        margin: 0;
+        margin: 0 2.5rem;
         max-width: none;
         width: 100%;
         border-radius: 8px;
@@ -331,9 +420,6 @@ footer {
         background-color: #222222;
     }
 
-    .shared-tooltip {
-        background-color: #1c6f9c;
-    }
     
     /* Dark mode popup styles */
     .popup-content {
@@ -369,13 +455,13 @@ footer {
     }
     
     .acknowledge-btn {
-        background: #667eea;
+        background: #4299e1;
         color: white;
     }
     
     .acknowledge-btn:hover {
-        background: #5a67d8;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        background: #3182ce;
+        box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
     }
     
     /* Dark mode show notice button */
@@ -393,5 +479,35 @@ footer {
     /* Dark mode footer */
     .last-updated {
         color: #a0aec0;
+    }
+    
+    /* Dark mode calendar link */
+    .calendar-link {
+        opacity: 0.7;
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .calendar-link:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Dark mode legend and badges */
+    .legend {
+        color: #a0aec0;
+    }
+    
+    .badge-demo.shared {
+        background: #3d2914;
+        color: #fbbf24;
+        border-color: #92400e;
+    }
+    
+    .badge-demo.dedicated {
+        background: #1e3a20;
+        color: #9ae6b4;
+        border-color: #38a169;
     }
 }
