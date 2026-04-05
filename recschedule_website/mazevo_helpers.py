@@ -37,6 +37,12 @@ def get_mazevo_bookings(
         "organizationTypeIds": None,
         "hideSpecialDates": False,
         "userOffsetMinutes": 240,
+        "startDay": start_time.day,
+        "startMonth": start_time.month - 1,
+        "startYear": start_time.year,
+        "endDay": end_time.day,
+        "endMonth": end_time.month - 1,
+        "endYear": end_time.year,
         "apiKey": mazevo_api_key(),
     }
     response = requests.post(endpoint, json=payload)
