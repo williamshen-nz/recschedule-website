@@ -16,9 +16,9 @@
             // Facilities notice popup functionality
             function showFacilitiesNotice() {
                 const lastDismissed = localStorage.getItem('facilitiesNoticeDismissed');
-                const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                const twoWeeksAgo = Date.now() - (14 * 24 * 60 * 60 * 1000);
                 
-                if (!lastDismissed || parseInt(lastDismissed) < oneWeekAgo) {
+                if (!lastDismissed || parseInt(lastDismissed) < twoWeeksAgo) {
                     document.getElementById('facilities-popup').style.display = 'flex';
                     document.body.style.overflow = 'hidden';
                     document.getElementById('show-notice-btn').style.display = 'none';
@@ -41,9 +41,9 @@
             // Show popup on page load and handle button visibility
             window.addEventListener('load', function() {
                 const lastDismissed = localStorage.getItem('facilitiesNoticeDismissed');
-                const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                const twoWeeksAgo = Date.now() - (14 * 24 * 60 * 60 * 1000);
                 
-                if (!lastDismissed || parseInt(lastDismissed) < oneWeekAgo) {
+                if (!lastDismissed || parseInt(lastDismissed) < twoWeeksAgo) {
                     showFacilitiesNotice();
                 } else {
                     document.getElementById('show-notice-btn').style.display = 'inline-block';
@@ -79,7 +79,7 @@
                 </div>
                 <div class="popup-footer">
                     <button onclick="dismissFacilitiesNotice()" class="acknowledge-btn" target="_self">
-                        Got it, don't show again for a week
+                        Got it, don't show again for two weeks
                     </button>
                 </div>
             </div>
